@@ -46,8 +46,8 @@ class CategoryModelSQLite:
             WHERE id = ?""", (name, self.category_select(name)[0][0]))
         self.conn.commit()
 
-    def student_delete(self, name):
-        if not self.student_select(name):
+    def category_delete(self, name):
+        if not self.category_select(name):
             raise IntegrityError("Category with that name doesn't exist.")
 
         self.cur.execute("""

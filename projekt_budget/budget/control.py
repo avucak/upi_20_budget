@@ -14,10 +14,34 @@ def show_category():
     categories=db.category_select()
     return ui.categoryShow(categories)
 
+def category_validate(name=None):
+    valid=""
+    if name is not None:
+        cat=db.category_select(name)
+        if cat:
+            valid="Category already exists"
+        elif name.strip()=="":
+            valid="Category must have a name"
+    return valid
+        
+        
+
 @post('/categories')
 def add_category():
     name=request.forms.get('cname')
-    db.category_insert(name)
-    categories=db.category_select()
-    return ui.categoryAdd(categories)
+    action=request.forms.action
+    if action=="add":
+        validation=category_validate(name)
+        categories=db.category_select()
+        if validation:
+            return ui.categoryShow(categories, validation, "block")
+        else:
+            db.category_insert(name)
+            categories=db.category_select()
+            return ui.categoryAdd(categories)
+    elif action=="delete":
+        db.category_delete(request.forms.categoryname)
+        categories=db.category_select()
+        return ui.categoryAdd(categories)
+        
 
