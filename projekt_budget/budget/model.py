@@ -36,14 +36,14 @@ class CategoryModelSQLite:
         except sqlite3.IntegrityError:
             raise IntegrityError("Category with that name already exists!")
 
-    def category_update(self, name):
+    def category_update(self, name, newName):
         if not self.category_select(name):
             raise IntegrityError("Category with that name doesn't exist.")
 
         self.cur.execute("""
             UPDATE categories
             SET name = ?
-            WHERE id = ?""", (name, self.category_select(name)[0][0]))
+            WHERE name = ?""", (newName, name))
         self.conn.commit()
 
     def category_delete(self, name):

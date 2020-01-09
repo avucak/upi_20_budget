@@ -28,7 +28,8 @@ def category_validate(name=None):
 
 @post('/categories')
 def add_category():
-    name=request.forms.get('cname')
+   # name=request.forms.get('cname')
+    name=request.forms.cname
     action=request.forms.action
     if action=="add":
         validation=category_validate(name)
@@ -43,5 +44,11 @@ def add_category():
         db.category_delete(request.forms.categoryname)
         categories=db.category_select()
         return ui.categoryAdd(categories)
+    elif action=="edit":
+        db.category_update(request.forms.oldName, request.forms.nameEdit)
+        categories=db.category_select()
+        return ui.categoryAdd(categories)
+
+    
         
 

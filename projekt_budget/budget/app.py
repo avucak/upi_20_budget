@@ -17,4 +17,4 @@ def index1():
 
 
 
-run(host='localhost', port = 8080, debug=True)
+run(host='localhost', port = 8080, debug=True, reloader=True)
