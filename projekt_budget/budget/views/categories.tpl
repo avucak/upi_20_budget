@@ -33,17 +33,12 @@ if(block.style.display ==="none")
 else {block.style.display="none";}
 }
 
-function Add(){
-if (validation=="")
-{block.style.display="block";}
-}
+function closeAddEdit(id,input,validation){
 
-function closeAdd(){
-
-var block=document.getElementById("divAdd");
+var block=document.getElementById(id);
 block.style.display="none";
-document.getElementById("cname").value="";
-document.getElementById("valid").innerHTML="";
+document.getElementById(input).value="";
+document.getElementById(validation).innerHTML="";
 
 }
 function showDiv(id)
@@ -54,10 +49,27 @@ document.getElementById(id).style.display="block";
 function hideDiv(id){
 document.getElementById(id).style.display="none";
 }
+
+function showEdit(id){
+if("{{editId}}"===id)
+{
+document.getElementById("div"+id+"Edit").style.display="block";
+document.getElementById("valid"+id).style.display="block";
+}
+}
+
+function showEdits(){
+var categories="{{data}}";
+for (index = 0; index < categories.length; ++index) {
+    showEdit(categories[index][0]);
+}
+}
+
+
 </script>
 
 <html>
-<body>
+<body onload="showEdits()">
 <div class="okvir">
 <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form> 
 <input type="button" class="button" name="addCategory" value="Add category" onclick="showAdd()">
@@ -65,8 +77,8 @@ document.getElementById(id).style.display="none";
   <form method="post">
   <input type="hidden" name="action" value="add">
     Category name: <input type="text" name="cname" id="cname" > <p style="color:red" id="valid"> {{validation}}</p> <br>
-	  <input type="submit" class="button" name="addCategory" value="Add" onclick="Add()">	
-	  <input type="button" class="button" name="discardCategory" value="Discard" onclick="closeAdd()">
+	  <input type="submit" class="button" name="addCategory" value="Add">	
+	  <input type="button" class="button" name="discardCategory" value="Discard" onclick="closeAddEdit('divAdd','cname','valid')">
   </form>
    
 </div>
@@ -79,9 +91,10 @@ document.getElementById(id).style.display="none";
     <form method="post" >
     <input type="hidden" name="action" value="edit">
     <input type="hidden" name="oldName" value="{{cat[1]}}">
-      <div style="display:none" id="div{{cat[0]}}Edit"><br>Category name: <input type="text" name="nameEdit" placeholder={{cat[1]}}> <p style="color:red" id="valid"> {{validation}}</p> <br>
-	<input type="submit" class="button" style="width:50; height:25;"  value="Save"> </form>
-	<input type="button" class="button" style="width:50; height:25;" value="Discard" onclick="hideDiv('div{{cat[0]}}Edit')">
+      <div style="display:none" id="div{{cat[0]}}Edit" onload="showEdit('{{cat[0]}}')"><br>Category name: <input type="text" name="nameEdit" id ="nameEdit" placeholder={{cat[1]}}> <br>
+        <p style="color:red;display:none" id="valid{{cat[0]}}"> {{validationEdit}}</p> <br>
+	<input type="submit" class="button" style="width:50; height:25;"  value="Save" > </form>
+	<input type="button" class="button" style="width:50; height:25;" value="Discard" onclick="closeAddEdit('div{{cat[0]}}Edit','nameEdit','valid{{cat[0]}}')">
       </div>
     <div style="display:none" id="div{{cat[0]}}"> Are you sure you want to delete category {{cat[1]}}? 
       <form method="post" >

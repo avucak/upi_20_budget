@@ -35,7 +35,7 @@ def add_category():
         validation=category_validate(name)
         categories=db.category_select()
         if validation:
-            return ui.categoryShow(categories, validation, "block")
+            return ui.categoryShow(categories=categories, validation=validation, display="block")
         else:
             db.category_insert(name)
             categories=db.category_select()
@@ -45,9 +45,15 @@ def add_category():
         categories=db.category_select()
         return ui.categoryAdd(categories)
     elif action=="edit":
-        db.category_update(request.forms.oldName, request.forms.nameEdit)
-        categories=db.category_select()
-        return ui.categoryAdd(categories)
+        editId=db.category_select(request.forms.oldName)[0][0]
+        validationEdit=category_validate(request.forms.nameEdit)
+        if validationEdit:
+            categories=db.category_select()
+            return ui.categoryShow(categories=categories, validationEdit=validationEdit, editId=editId, displayEdit="block")
+        else:
+            db.category_update(request.forms.oldName, request.forms.nameEdit)
+            categories=db.category_select()
+            return ui.categoryAdd(categories)
 
     
         
