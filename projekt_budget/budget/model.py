@@ -40,6 +40,10 @@ class CategoryModelSQLite:
         if not self.category_select(name):
             raise IntegrityError("Category with that name doesn't exist.")
 
+        if self.category_select(newName):
+            raise IntegrityError("Category with that name already exists.")
+            
+
         self.cur.execute("""
             UPDATE categories
             SET name = ?
