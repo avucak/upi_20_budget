@@ -1,13 +1,13 @@
 from os.path import abspath, join, dirname
 from bottle import route, run, post, request, redirect
-from view import CategoryView
+from view import CategoryView, TransactionView
 
 from model import CategoryModelSQLite
 
 filename = abspath(join(dirname(__file__), "..", "category.db"))
 db=CategoryModelSQLite(filename)
 ui=CategoryView()
-
+uiTransaction=TransactionView()
 
 @route('/categories')
 def show_category():
@@ -49,11 +49,16 @@ def add_category():
         validationEdit=category_validate(request.forms.nameEdit)
         if validationEdit:
             categories=db.category_select()
-            return ui.categoryShow(categories=categories, validationEdit=validationEdit, editId=editId, displayEdit="block")
+            return ui.categoryShow(categories=categories, validationEdit=validationEdit, editId=editId)
         else:
             db.category_update(request.forms.oldName, request.forms.nameEdit)
             categories=db.category_select()
             return ui.categoryAdd(categories)
+
+@route('/transactions/add')
+def add_transaction():
+    categories=db.category_select()
+    return uiTransaction.transactionAdd(categories)
 
     
         

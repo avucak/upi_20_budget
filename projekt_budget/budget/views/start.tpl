@@ -1,10 +1,10 @@
 <style>
-div {
+.divFrame {
   resize: both;
   overflow: auto;
   text-align: center;
   background-color: #fffdd0;
-  width: 200px;
+  width: 310px;
   padding: 50px;
 }
 .button {
@@ -26,7 +26,7 @@ div {
 <html>
 <body>
 <center>
-<div>
+<div class="divFrame">
 <h1 style="color:#322a4f"> budget.IO </h1>
 <form action="transactions" method="get">
 <input type="submit" class="button" name="transaction" value="Transactions">

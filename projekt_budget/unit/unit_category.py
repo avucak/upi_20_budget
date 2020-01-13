@@ -5,7 +5,7 @@ if __name__ == "__main__":
     import sys
     sys.path.append(os.path.abspath("../budget"))
 
-import model
+import model_category
 
 class TestCategoryModel(unittest.TestCase):
 
