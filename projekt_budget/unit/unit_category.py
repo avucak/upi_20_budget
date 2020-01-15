@@ -1,16 +1,14 @@
-import unittest
-
 if __name__ == "__main__":
     import os
     import sys
     sys.path.append(os.path.abspath("../budget"))
+import unittest, model_category
 
-import model
 
 class TestCategoryModel(unittest.TestCase):
 
     def setUp(self):
-        self.db = model.CategoryModelSQLite("unit_category.db")
+        self.db = model_category.CategoryModelSQLite("unit_category.db")
 
     def tearDown(self):
         del(self.db)
@@ -47,27 +45,27 @@ class TestCategoryModel(unittest.TestCase):
     def test_category_2_inserts_with_same_name(self):
         self.db.category_insert("Bills")
         self.db.category_insert("Rent")
-        with self.assertRaises(model.IntegrityError):
+        with self.assertRaises(model_category.IntegrityError):
             self.db.category_insert("Bills")
         self.assertCountEqual(self.db.category_select(), [(1, "Bills"), (2, "Rent")])
 
     def test_category_2_inserts_wrong_update(self):
         self.db.category_insert("Bills")
         self.db.category_insert("Rent")
-        with self.assertRaises(model.IntegrityError):
+        with self.assertRaises(model_category.IntegrityError):
             self.db.category_update("Rent","Bills")
         self.assertCountEqual(self.db.category_select(), [(1,"Bills"), (2, "Rent")])
 
     def test_category_2_inserts_wrong_delete(self):
         self.db.category_insert("Bills")
         self.db.category_insert("Rent")
-        with self.assertRaises(model.IntegrityError):
+        with self.assertRaises(model_category.IntegrityError):
             self.db.category_delete("Food")
         self.assertCountEqual(self.db.category_select(), [(1,"Bills"), (2, "Rent")])
 
     def test_category_empty_insert(self):
         self.db.category_insert("Bills")
-        with self.assertRaises(model.IntegrityError):
+        with self.assertRaises(model_category.IntegrityError):
             self.db.category_delete("   ")
         self.db.category_insert("Rent")
         self.assertCountEqual(self.db.category_select(), [(1,"Bills"), (2, "Rent")])

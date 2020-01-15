@@ -1,10 +1,20 @@
 <style>
-div {
+div2 {
   resize: both;
   overflow: auto;
   background-color: #8b72be;
   padding: 50 px;
 }
+.divFrame{
+  resize: both;
+  overflow: auto;
+  text-align: center;
+  background-color: #fffdd0;
+  width: 310px;
+  padding: 50px;
+  margin: 0 auto;
+}
+
 .button {
   background-color: #69359c; /* Purple */
   width: 100;
@@ -30,24 +40,24 @@ if(block.style.display ==="none")
 else
 {block.style.display="none";}
 }
+
+
 </script>
 
 
 
-<body bgcolor="#fffdd0">
+<body>
+<div class="divFrame">
 <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
 
-<form action="/addtransaction" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
-<input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
-
-
-<br>
-<form action="/sorttransactions" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions"></form>
+<form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
+<form action="/filter" method="get"><input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
+<form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions"></form>
 <select>
-  <option value="volvo">Lowest amount first</option>
-  <option value="saab">Highest amount first</option>
-  <option value="mercedes">Oldest transaction first</option>
-  <option value="audi">Newest transaction first</option>
+  <option value="lowest">Lowest amount first</option>
+  <option value="highest">Highest amount first</option>
+  <option value="oldest">Oldest transaction first</option>
+  <option value="newest">Newest transaction first</option>
 </select>
 
 <div id="divFilter" style="display: none;">
@@ -71,4 +81,5 @@ else
 <br>
 % end
 </div> 
+</div>
 </body>

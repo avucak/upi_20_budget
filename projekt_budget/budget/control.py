@@ -1,23 +1,27 @@
 from os.path import abspath, join, dirname
 from bottle import route, run, post, request, redirect
-from view import CategoryView
+from view import CategoryView, TransactionView
 
-from model import CategoryModelSQLite
+from model_category import CategoryModelSQLite
+from model_transaction import TransactionModelSQLite
 
 filename = abspath(join(dirname(__file__), "..", "category.db"))
-db=CategoryModelSQLite(filename)
-ui=CategoryView()
 
+dbCat=CategoryModelSQLite(filename)
+uiCat=CategoryView()
+
+dbTrans=TransactionModelSQLite(filename)
+uiTrans=TransactionView()
 
 @route('/categories')
 def show_category():
-    categories=db.category_select()
-    return ui.categoryShow(categories)
+    categories=dbCat.category_select()
+    return uiCat.categoryShow(categories)
 
 def category_validate(name=None):
     valid=""
     if name is not None:
-        cat=db.category_select(name)
+        cat=dbCat.category_select(name)
         if cat:
             valid="Category already exists"
         elif name.strip()=="":
@@ -33,27 +37,32 @@ def add_category():
     action=request.forms.action
     if action=="add":
         validation=category_validate(name)
-        categories=db.category_select()
+        categories=dbCat.category_select()
         if validation:
-            return ui.categoryShow(categories=categories, validation=validation, display="block")
+            return uiCat.categoryShow(categories=categories, validation=validation, display="block")
         else:
-            db.category_insert(name)
-            categories=db.category_select()
-            return ui.categoryAdd(categories)
+            dbCat.category_insert(name)
+            categories=dbCat.category_select()
+            return uiCat.categoryAdd(categories)
     elif action=="delete":
-        db.category_delete(request.forms.categoryname)
-        categories=db.category_select()
-        return ui.categoryAdd(categories)
+        dbCat.category_delete(request.forms.categoryname)
+        categories=dbCat.category_select()
+        return uiCat.categoryAdd(categories)
     elif action=="edit":
-        editId=db.category_select(request.forms.oldName)[0][0]
+        editId=dbCat.category_select(request.forms.oldName)[0][0]
         validationEdit=category_validate(request.forms.nameEdit)
         if validationEdit:
-            categories=db.category_select()
-            return ui.categoryShow(categories=categories, validationEdit=validationEdit, editId=editId, displayEdit="block")
+            categories=dbCat.category_select()
+            return uiCat.categoryShow(categories=categories, validationEdit=validationEdit, editId=editId)
         else:
-            db.category_update(request.forms.oldName, request.forms.nameEdit)
-            categories=db.category_select()
-            return ui.categoryAdd(categories)
+            dbCat.category_update(request.forms.oldName, request.forms.nameEdit)
+            categories=dbCat.category_select()
+            return uiCat.categoryAdd(categories)
+
+@route('/transactions/add')
+def add_transaction():
+    categories=dbCat.category_select()
+    return uiTrans.transactionAdd(categories)
 
     
         

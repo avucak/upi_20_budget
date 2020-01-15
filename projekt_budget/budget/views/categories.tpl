@@ -1,15 +1,15 @@
 <style>
-.okvir{
+.divFrame{
   resize: both;
   overflow: auto;
   text-align: center;
   background-color: #fffdd0;
-  width: 300px;
+  width: 310px;
   padding: 50px;
   margin: 0 auto;
 }
 .button {
-  background-color: #69359c; /* Purple */
+  background-color: #69359c;
   width: 100;
   height: 40;
   border: none;
@@ -70,7 +70,7 @@ for (index = 0; index < categories.length; ++index) {
 
 <html>
 <body onload="showEdits()">
-<div class="okvir">
+<div class="divFrame">
 <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form> 
 <input type="button" class="button" name="addCategory" value="Add category" onclick="showAdd()">
 <div id="divAdd" style="display: {{disp}}">
