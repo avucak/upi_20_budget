@@ -5,6 +5,8 @@ from view import CategoryView, TransactionView
 from model_category import CategoryModelSQLite
 from model_transaction import TransactionModelSQLite
 
+from datetime import datetime
+
 filename = abspath(join(dirname(__file__), "..", "category.db"))
 
 dbCat=CategoryModelSQLite(filename)
@@ -59,11 +61,59 @@ def add_category():
             categories=dbCat.category_select()
             return uiCat.categoryAdd(categories)
 
+def transaction_validate(name=None, category=None, amount=None, date=None, note=None):
+    valid = {}
+    if name is not None:
+        if name.strip()=="":
+            valid["name"] = "Transaction must have a name"
+    if category is None:
+        valid["category"] = "Transaction must have a category"
+    if amount is not None:
+        if amount.strip()=="":
+            valid["amount"] = "Transaction must have an amount"
+        else:
+            try:
+                float(amount)
+            except ValueError:
+                valid["amount"] = "Amount must be a real number"
+    if date is not None:
+        if date.strip()=="":
+            valid["date"] = "Transaction must have a date"
+        else:
+            today = datetime.today().strftime('%Y-%m-%d')
+            if date > today:            
+                valid["date"] = "Transaction date must be today or earlier"      
+    return valid
+
+
+@route('/transactions')
+def show_transactions():
+    transactions = dbTrans.transaction_select()
+    return uiTrans.transactionShow(transactions)
+
+
 @route('/transactions/add')
+def show_add_transaction():
+    categories = dbCat.category_select()
+    if categories == []:
+        return uiTrans.transactionAdd(disable="true")
+    return uiTrans.transactionAdd(categories=categories)   
+
+@post('/transactions/add')
 def add_transaction():
-    categories=dbCat.category_select()
-    return uiTrans.transactionAdd(categories)
-
+    name = request.forms.transactionName
+    category = request.forms.transactionCategory
+    amount = request.forms.transactionAmount
+    date = request.forms.transactionDate
+    note = request.forms.transactionNote
     
+    validation = transaction_validate(name,category,amount,date,note)
+    categories=dbCat.category_select()
+    if validation:  
+        return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note)
+    else:
+        categoryId = dbCat.category_select(category)[0][0]
+        dbTrans.transaction_insert(name,categoryId,amount,date,note)
+        transactions = dbTrans.transaction_select()
+        return uiTrans.transactionShow(transactions)
         
-

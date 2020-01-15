@@ -9,12 +9,4 @@ import control
 def index():
     return template('start')
 
-@route('/transactions')
-def index1():
-    return template('transactions')
-
-
-
-
-
 run(host='localhost', port = 8080, debug=True, reloader=True)

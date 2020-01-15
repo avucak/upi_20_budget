@@ -13,8 +13,13 @@ class CategoryView():
 class TransactionView():
 
     @staticmethod
-    def transactionShow():
-        return ""
+    def transactionShow(transactions=[]):
+        return template('transactions', transactions=transactions)
+    
     @staticmethod
-    def transactionAdd(categories=[]):
-        return template("add_transaction", categories=categories)
+    def transactionAdd(categories=[], disable="false"):
+        return template("add_transaction", categories=categories, disable=disable)
+
+    @staticmethod
+    def transactionAddValidate(categories=[], validation="", name="", category="", amount="", date="", note=""):
+        return template("add_transaction_valid", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note)

@@ -76,10 +76,10 @@ else
 
 
 <div class="panel panel-default">
-% for i in range(5):
-<div class="panel-body" id="trans{{i}}">Transakcija {{i}} <button class="button" style="width:50; height:25;">Edit</button> <button class="button" style="width:50; height:25;">Delete</button> </div>
-<br>
-% end
+  % for trans in transactions:
+  <div class="panel-body" id="trans{{trans[0]}}">{{trans[1]}}  {{trans[3]}}  <button class="button" style="width:50; height:25;">Edit</button> <button class="button" style="width:50; height:25;">Delete</button> </div>
+  <br>
+  % end
 </div> 
 </div>
 </body>
