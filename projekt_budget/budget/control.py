@@ -110,10 +110,40 @@ def add_transaction():
     validation = transaction_validate(name,category,amount,date,note)
     categories=dbCat.category_select()
     if validation:  
-        return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note)
+        return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note,add="True")
     else:
         categoryId = dbCat.category_select(category)[0][0]
         dbTrans.transaction_insert(name,categoryId,amount,date,note)
+        transactions = dbTrans.transaction_select()
+        return uiTrans.transactionShow(transactions)
+
+@route('/transactions/edit/<transactionId>')
+def show_edit_transaction(transactionId):
+    transaction = dbTrans.transaction_select(transactionId=transactionId)[0]
+    name = transaction[1]
+    category = transaction[2]
+    amount = transaction[3]
+    date = transaction[4]
+    note = transaction[5]
+    
+    categories = dbCat.category_select()
+    return uiTrans.transactionEdit(categories=categories,validation={},name=name,category=category,amount=amount,date=date,note=note)
+
+@post('/transactions/edit/<transactionId>')
+def edit_transaction(transactionId):
+    name = request.forms.transactionName
+    category = request.forms.transactionCategory
+    amount = request.forms.transactionAmount
+    date = request.forms.transactionDate
+    note = request.forms.transactionNote
+    
+    validation = transaction_validate(name,category,amount,date,note)
+    categories=dbCat.category_select()
+    if validation:  
+        return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note,add="False")
+    else:
+        categoryId = dbCat.category_select(category)[0][0]
+        dbTrans.transaction_update(transactionId,name,categoryId,amount,date,note)
         transactions = dbTrans.transaction_select()
         return uiTrans.transactionShow(transactions)
         

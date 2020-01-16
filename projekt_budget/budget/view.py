@@ -21,5 +21,11 @@ class TransactionView():
         return template("add_transaction", categories=categories, disable=disable)
 
     @staticmethod
-    def transactionAddValidate(categories=[], validation="", name="", category="", amount="", date="", note=""):
-        return template("add_transaction_valid", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note)
+    def transactionAddValidate(categories=[], validation="", name="", category="", amount="", date="", note="", add="True"):
+        return template("add_transaction_valid", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note, add=add)
+
+    @staticmethod
+    def transactionEdit(categories=[], validation="", name="", category="", amount="", date="", note=""):
+        return template("edit_transaction", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note)
+
+

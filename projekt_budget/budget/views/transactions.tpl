@@ -47,39 +47,41 @@ else
 
 
 <body>
-<div class="divFrame">
-<form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
+  <div class="divFrame">
+    <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
 
-<form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
-<form action="/filter" method="get"><input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
-<form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions"></form>
-<select>
-  <option value="lowest">Lowest amount first</option>
-  <option value="highest">Highest amount first</option>
-  <option value="oldest">Oldest transaction first</option>
-  <option value="newest">Newest transaction first</option>
-</select>
+    <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
+    <form action="/filter" method="get"><input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
+    <form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
+      <select>
+        <option value="lowest">Lowest amount first</option>
+        <option value="highest">Highest amount first</option>
+        <option value="oldest">Oldest transaction first</option>
+        <option value="newest">Newest transaction first</option>
+      </select>
+    </form>
+    <div id="divFilter" style="display: none;">
+      <input type="checkbox" name="food">All<input type="checkbox" name="food">Food <input type="checkbox" name="food">Rent <input type="checkbox" name="food">Clothes
+      <br> Min:<input type="text">   Max:<input type="text">
+      <br>Start date: <input type="date" value="2018-12-01">   End date:<input type="date" value="2018-12-31">
+      <input type="submit" class="button" name="applyFilter" value="Apply">
+      <input type="submit" class="button" name="removeFilter" value="Remove">
+    </div>
 
-<div id="divFilter" style="display: none;">
-<input type="checkbox" name="food">All<input type="checkbox" name="food">Food <input type="checkbox" name="food">Rent <input type="checkbox" name="food">Clothes
-<br> Min:<input type="text">   Max:<input type="text">
-<br>Start date: <input type="date" value="2018-12-01">   End date:<input type="date" value="2018-12-31">
-<input type="submit" class="button" name="applyFilter" value="Apply">
-<input type="submit" class="button" name="removeFilter" value="Remove">
-</div>
+    <br>
+    <hr>
+    <br>
+    <input type="month" value="2019-12">
 
-
-<br>
-<hr>
-<br>
-<input type="month" value="2019-12">
-
-
-<div class="panel panel-default">
-  % for trans in transactions:
-  <div class="panel-body" id="trans{{trans[0]}}">{{trans[1]}}  {{trans[3]}}  <button class="button" style="width:50; height:25;">Edit</button> <button class="button" style="width:50; height:25;">Delete</button> </div>
-  <br>
-  % end
-</div> 
-</div>
+    <div class="panel panel-default">
+      % for trans in transactions:
+        <div class="panel-body" id="trans{{trans[0]}}">{{trans[0]}}  {{trans[1]}}  {{trans[3]}}  
+          <form action="/transactions/edit/{{trans[0]}}" method="get">
+            <input type="submit" class="button" style="width:50; height:25;" value="Edit">
+          </form>
+          <button class="button" style="width:50; height:25;">Delete</button> 
+        </div>
+      % end
+    </div> 
+  </div>
 </body>

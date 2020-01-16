@@ -59,7 +59,7 @@ function categoryWarning()
         <br>
         Date: <input class="inputClass"  type="date" name="transactionDate" id="transactionDate">
         <br>
-        Note: <br><textarea cols="30" rows="5" class="inputClass"  type="text" name="TransactionNote"></textarea>
+        Note: <br><textarea cols="30" rows="5" class="inputClass"  type="text" name="transactionNote"></textarea>
         <br><br>
         <input type="submit" class="button" name="addTransaction" id="addTransaction" value="Add">
 	<p style="color:red" id="categoryWarning">There must be at least one category to add a transaction </p>
