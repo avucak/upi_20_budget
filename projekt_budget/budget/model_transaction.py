@@ -11,6 +11,7 @@ class IntegrityError(Exception):
     pass
 
 
+
 class TransactionModelSQLite:
     
     def __init__(self, filename):
@@ -47,6 +48,11 @@ class TransactionModelSQLite:
 
     def transaction_insert(self, name, category, amount, date, note=""):
         try:
+            float(amount)
+        except ValueError:
+            raise IntegrityError("Amount is not a number.")
+        
+        try:
             self.cur.execute("""
                 INSERT INTO transactions
                 (name, category, amount, date, note)
@@ -54,14 +60,10 @@ class TransactionModelSQLite:
             self.conn.commit()
         except sqlite3.IntegrityError:
             raise IntegrityError("Greška!")
-            
-##            try:
-##                float(amount)
-##            except ValueError:
-##                raise IntegrityError("Amount is not a number.")
+                       
 
     def transaction_update(self, transactionId, name, category, amount, date, note=""):
-        if not self.student_select(transactionId=transactionId):
+        if not self.transaction_select(transactionId=transactionId):
             raise IntegrityError("Transaction doesn't exist.")
 
         self.cur.execute("""
@@ -71,7 +73,7 @@ class TransactionModelSQLite:
         self.conn.commit()
 
     def transaction_delete(self, transactionId):
-        if not self.student_select(transactionId=transactionId):
+        if not self.transaction_select(transactionId=transactionId):
             raise IntegrityError("Transaction doesn't exist.")
 
         self.cur.execute("""
