@@ -138,7 +138,7 @@ def edit_transaction(transactionId):
     note = request.forms.transactionNote
     
     validation = transaction_validate(name,category,amount,date,note)
-    categories=dbCat.category_select()
+    categories = dbCat.category_select()
     if validation:  
         return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note,add="False")
     else:
@@ -147,3 +147,9 @@ def edit_transaction(transactionId):
         transactions = dbTrans.transaction_select()
         return uiTrans.transactionShow(transactions)
         
+@post('/transactions')
+def delete_transaction():
+    dbTrans.transaction_delete(request.forms.transactionId)
+    transactions = dbTrans.transaction_select()
+    return uiTrans.transactionShow(transactions)
+    

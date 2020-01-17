@@ -27,44 +27,42 @@ form{ display: inline-block; }
 
 <script>
 function showAdd(){
-var block=document.getElementById("divAdd");
-if(block.style.display ==="none")
-{block.style.display="block";}
-else {block.style.display="none";}
+  var block=document.getElementById("divAdd");
+  if(block.style.display ==="none")
+  { block.style.display="block"; }
+  else 
+  { block.style.display="none"; }
 }
 
 function closeAddEdit(id,input,validation){
-
-var block=document.getElementById(id);
-block.style.display="none";
-document.getElementById(input).value="";
-document.getElementById(validation).innerHTML="";
-
+  var block=document.getElementById(id);
+  block.style.display="none";
+  document.getElementById(input).value="";
+  document.getElementById(validation).innerHTML="";
 }
-function showDiv(id)
-{
-document.getElementById(id).style.display="block";
+
+function showDiv(id){
+  document.getElementById(id).style.display="block";
 }
 
 function hideDiv(id){
-document.getElementById(id).style.display="none";
+  document.getElementById(id).style.display="none";
 }
 
 function showEdit(id){
-if("{{editId}}"===id)
-{
-document.getElementById("div"+id+"Edit").style.display="block";
-document.getElementById("valid"+id).style.display="block";
-}
+  if("{{editId}}"===id)
+  {
+    document.getElementById("div"+id+"Edit").style.display="block";
+    document.getElementById("valid"+id).style.display="block";
+  }
 }
 
 function showEdits(){
-var categories="{{data}}";
-for (index = 0; index < categories.length; ++index) {
+  var categories="{{data}}";
+  for (index = 0; index < categories.length; index++) {
     showEdit(categories[index][0]);
+  }
 }
-}
-
 
 </script>
 
