@@ -91,7 +91,7 @@ for (index = 0; index < categories.length; ++index) {
     <form method="post" >
     <input type="hidden" name="action" value="edit">
     <input type="hidden" name="oldName" value="{{cat[1]}}">
-      <div style="display:none" id="div{{cat[0]}}Edit" onload="showEdit('{{cat[0]}}')"><br>Category name: <input type="text" name="nameEdit" id ="nameEdit" placeholder={{cat[1]}}> <br>
+      <div style="display:none" id="div{{cat[0]}}Edit" onload="showEdit('{{cat[0]}}')"><br>Category name: <input type="text" name="nameEdit" id ="nameEdit" placeholder="{{cat[1]}}"> <br>
         <p style="color:red;display:none" id="valid{{cat[0]}}"> {{validationEdit}}</p> <br>
 	<input type="submit" class="button" style="width:50; height:25;"  value="Save" > </form>
 	<input type="button" class="button" style="width:50; height:25;" value="Discard" onclick="closeAddEdit('div{{cat[0]}}Edit','nameEdit','valid{{cat[0]}}')">
@@ -99,7 +99,7 @@ for (index = 0; index < categories.length; ++index) {
     <div style="display:none" id="div{{cat[0]}}"> Are you sure you want to delete category {{cat[1]}}? 
       <form method="post" >
       <input type="hidden" name="action" value="delete">
-      <input type="hidden" name="categoryname" value={{cat[1]}}>
+      <input type="hidden" name="categoryname" value="{{cat[1]}}">
       <input type="submit" class="button" style="width:50; height:25;"  value="Yes"> </form>
       <input type="button" class="button" style="width:50; height:25;" value="No" onclick="hideDiv('div{{cat[0]}}')">
     </div>
