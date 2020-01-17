@@ -39,6 +39,7 @@ function showFilter(){
   { block.style.display="block"; }
   else
   { block.style.display="none"; }
+  document.getElementById("formFilter").reset();  <!--Treba li rest biti samo na Remove-->
 }
 
 function showDiv(id){
@@ -58,7 +59,7 @@ function hideDiv(id){
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
 
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
-    <form action="/filter" method="get"><input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
+    <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
     <form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
       <select>
         <option value="lowest">Lowest amount first</option>
@@ -68,11 +69,21 @@ function hideDiv(id){
       </select>
     </form>
     <div id="divFilter" style="display: none;">
-      <input type="checkbox" name="food">All<input type="checkbox" name="food">Food <input type="checkbox" name="food">Rent <input type="checkbox" name="food">Clothes
-      <br> Min:<input type="text">   Max:<input type="text">
-      <br>Start date: <input type="date" value="2018-12-01">   End date:<input type="date" value="2018-12-31">
-      <input type="submit" class="button" name="applyFilter" value="Apply">
-      <input type="submit" class="button" name="removeFilter" value="Remove">
+      <form id="formFilter" method="post">
+	<input type="hidden" name="action" value="filter">
+        <label><input type="checkbox" name="checkboxAll" value="all">All</label>
+        % for cat in categories:
+          <label><input type="checkbox" name="{{cat[1]}}" value="{{cat[0]}}">{{cat[1]}}</label>
+        % end
+        <br> Min: <input type="number" name="minAmount" step="0.01">
+        <br> Max: <input type="number" name="maxAmount" step="0.01">
+        <br> Start date: <input type="date" name="minDate">
+        <br> End date: <input type="date" name="maxDate">
+        <input type="submit" class="button" name="applyFilter" value="Apply">
+      </form>
+      <form action="/transactions" method="get">
+        <input type="submit" class="button" name="removeFilter" value="Remove" onclick="showFilter()">
+      </form>
     </div>
 
     <br>

@@ -27,23 +27,44 @@ class TransactionModelSQLite:
               note string,
               FOREIGN KEY(category) REFERENCES categories(id));""")
 
-    def transaction_select(self, transactionId=None, name=None, category=None, amount=None, date=None):
+    def transaction_select(self, transactionId=None, name=None, category=None, categories=None, amount=None, minAmount=None, maxAmount=None, date=None, minDate=None, maxDate=None):
         sql = "SELECT * FROM transactions "
         sql_where, sql_and = False, False
         cond = []
-        for field, op, val in [("id", "=", transactionId), ("name", "=", name), ("amount", "=", amount), ("category", "=", category), ("date", "=", date)]:
+        if categories is not None:
+            if len(categories)>0:
+                q = "("
+                for cat in categories:
+                    q += "?,"
+                q = q[:-1]
+                q += ")"
+            else:
+                categories = None
+        for field, op, val in [("id", "=", transactionId), ("name", "=", name), ("amount", "=", amount), ("amount", ">=", minAmount), ("amount", "<=", maxAmount), ("category", "=", category), ("category", "IN", categories),("date", "=", date), ("date", ">=", minDate), ("date", "<=", maxDate)]:
             if val is not None:
                 if not sql_where:
                     sql_where = True
                     sql += "WHERE "
                 if sql_and:
                     sql += "AND "
-                sql += "{} {} ? ".format(field, op)
+                if val == categories:
+                    sql += "{} {} {} ".format(field, op, q)
+                    for cat in val:
+                        cond.append(cat)
+                else:
+                    sql += "{} {} ? ".format(field, op)
+                    cond.append(val)
                 sql_and = True
-                cond.append(val)
+                
 
-        self.cur.execute(sql, tuple(cond))
-        return self.cur.fetchall()
+        try:
+            self.cur.execute(sql, tuple(cond))
+            return self.cur.fetchall()
+        except:
+            ispis=""
+            for c in cond:
+                ispis+=c+" "
+            raise Exception("Condition izgleda ovako: "+ispis+",a sam sql ovako:"+sql)
 
     def transaction_insert(self, name, category, amount, date, note=""):
         try:
