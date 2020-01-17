@@ -34,13 +34,20 @@ form{ display: inline-block; }
 
 <script>
 function showFilter(){
-var block=document.getElementById("divFilter");
-if(block.style.display ==="none")
-{block.style.display="block";}
-else
-{block.style.display="none";}
+  var block=document.getElementById("divFilter");
+  if(block.style.display === "none")
+  { block.style.display="block"; }
+  else
+  { block.style.display="none"; }
 }
 
+function showDiv(id){
+  document.getElementById(id).style.display="block";
+}
+
+function hideDiv(id){
+  document.getElementById(id).style.display="none";
+}
 
 </script>
 
@@ -79,7 +86,15 @@ else
           <form action="/transactions/edit/{{trans[0]}}" method="get">
             <input type="submit" class="button" style="width:50; height:25;" value="Edit">
           </form>
-          <button class="button" style="width:50; height:25;">Delete</button> 
+          <input type="button" class="button" style="width:50; height:25;" value="Delete" onclick='showDiv("div{{trans[0]}}Delete")'>
+          <div style="display:none" id="div{{trans[0]}}Delete"> Are you sure you want to delete transaction {{trans[1]}}? 
+            <form method="post" >
+              <input type="hidden" name="action" value="delete"> <!--Trenutno ne treba, ali ako bude jos post metoda ce trebati-->
+              <input type="hidden" name="transactionId" value="{{trans[0]}}">
+              <input type="submit" class="button" style="width:50; height:25;"  value="Yes"> 
+            </form>
+            <input type="button" class="button" style="width:50; height:25;" value="No" onclick="hideDiv('div{{trans[0]}}Delete')">
+          </div>
         </div>
       % end
     </div> 
