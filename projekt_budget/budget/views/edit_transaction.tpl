@@ -46,7 +46,7 @@ function selectCategory()
     <center>
     <div class="divFrame">
       <form method="post">
-        Transaction name: <input type="text" name="transactionName" value={{name}}>
+        Transaction name: <input type="text" name="transactionName" value="{{name}}">
         <br>
         Category: <select name="transactionCategory" class="inputClass">
         % for cat in categories:
@@ -54,9 +54,9 @@ function selectCategory()
         % end
         </select>
         <br>
-        Amount: <input class="inputClass" type="number" name="transactionAmount" step="0.01" value={{amount}}>
+        Amount: <input class="inputClass" type="number" name="transactionAmount" step="0.01" value="{{amount}}">
         <br>
-        Date: <input class="inputClass"  type="date" name="transactionDate" id="transactionDate" value={{date}}>
+        Date: <input class="inputClass"  type="date" name="transactionDate" id="transactionDate" value="{{date}}">
         <br>
         Note: <br><textarea cols="30" rows="5" class="inputClass"  type="text" name="transactionNote">{{note}}</textarea>
         <br><br>
