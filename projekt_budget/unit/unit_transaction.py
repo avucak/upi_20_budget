@@ -89,7 +89,7 @@ class TestTransactionModel(unittest.TestCase):
         self.assertCountEqual(self.dbTrans.transaction_select(), [(1, "Water bill", 1, 79.99, "2019-12-10", "November"),
                                                                               (3, "Rent", 2, 150, "2019-12-01", "Rent for November")])
 
-    def test_transaction_3_inserts_1_update(self):
+    def test_transaction_3_inserts_1_update_name(self):
         self.insert_categories()
         
         self.dbTrans.transaction_insert("Water bill", 1, 79.99, "2019-12-10", "November")
@@ -99,6 +99,18 @@ class TestTransactionModel(unittest.TestCase):
 
         self.assertCountEqual(self.dbTrans.transaction_select(), [(1, "Water bill", 1, 79.99, "2019-12-10", "November"),
                                                                   (2, "Lunch", 3, 35.45, "2019-12-10", ""),
+                                                                  (3, "Rent", 2, 150, "2019-12-01", "Rent for November")])
+
+    def test_transaction_3_inserts_1_update_note_and_name(self):
+        self.insert_categories()
+        
+        self.dbTrans.transaction_insert("Water bill", 1, 79.99, "2019-12-10", "November")
+        self.dbTrans.transaction_insert("Dinner", 3, 35.45, "2019-12-10")
+        self.dbTrans.transaction_insert("Rent", 2, 150, "2019-12-01", "Rent for November")
+        self.dbTrans.transaction_update(2, "Lunch", 3, 35.45, "2019-12-10", "Went out with colleagues after work")
+
+        self.assertCountEqual(self.dbTrans.transaction_select(), [(1, "Water bill", 1, 79.99, "2019-12-10", "November"),
+                                                                  (2, "Lunch", 3, 35.45, "2019-12-10", "Went out with colleagues after work"),
                                                                   (3, "Rent", 2, 150, "2019-12-01", "Rent for November")])
 
     def test_transaction_3_inserts_1_wrong_update(self):
