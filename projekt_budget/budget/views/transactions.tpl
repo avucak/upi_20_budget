@@ -49,24 +49,33 @@ function hideDiv(id){
   document.getElementById(id).style.display="none";
 }
 
+function getSortOption(){
+window.location.href = "/transactions/sort/"+document.getElementById("sortOption").value;
+}
+function sortOption(){
+document.getElementById("sortOption").value=="{{option}}"
+}
 </script>
 
+<html>
 
-
-<body>
+<body onload="sortOption()">
   <div class="divFrame">
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
 
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
     <form action="/filter" method="get"><input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
-    <form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
-      <select>
-        <option value="lowest">Lowest amount first</option>
-        <option value="highest">Highest amount first</option>
-        <option value="oldest">Oldest transaction first</option>
-        <option value="newest">Newest transaction first</option>
-      </select>
-    </form>
+	<form action="javascript: getSortOption()" method="get"><input type="submit" class="button" name="sort_transaction" value="Sort transactions">
+	<select id="sortOption" name="sortOption">
+		<option value="other">select sort option</option>	
+		<option value="lowest">Lowest amount first</option>
+		<option value="highest">Highest amount first</option>
+		<option value="oldest">Oldest transaction first</option>
+		<option value="newest">Newest transaction first</option>
+		<option value="category">By category</option>
+	</select>
+	</form>
+
     <div id="divFilter" style="display: none;">
       <input type="checkbox" name="food">All<input type="checkbox" name="food">Food <input type="checkbox" name="food">Rent <input type="checkbox" name="food">Clothes
       <br> Min:<input type="text">   Max:<input type="text">
@@ -100,3 +109,5 @@ function hideDiv(id){
     </div> 
   </div>
 </body>
+
+</html>

@@ -13,8 +13,8 @@ class CategoryView():
 class TransactionView():
 
     @staticmethod
-    def transactionShow(transactions=[]):
-        return template('transactions', transactions=transactions)
+    def transactionShow(transactions=[], option="other"):
+        return template('transactions', transactions=transactions, option=option)
     
     @staticmethod
     def transactionAdd(categories=[], disable="false"):

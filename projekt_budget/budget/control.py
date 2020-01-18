@@ -88,7 +88,7 @@ def transaction_validate(name=None, category=None, amount=None, date=None, note=
 
 @route('/transactions')
 def show_transactions():
-    transactions = dbTrans.transaction_select()
+    transactions = dbTrans.transaction_select() 
     return uiTrans.transactionShow(transactions)
 
 
@@ -152,4 +152,31 @@ def delete_transaction():
     dbTrans.transaction_delete(request.forms.transactionId)
     transactions = dbTrans.transaction_select()
     return uiTrans.transactionShow(transactions)
+
+@route('/transactions/sort/<option>')
+def sort_transaction(option):
+##    transactions = dbTrans.transaction_sort(amount=True, desc=True)
+##    ispis=""
+##    for t in dbTrans.transaction_sort(amount=True, desc=True):
+##        ispis+=t[1]+ " "
+##    return ispis
+
+    
+    if option=="lowest":
+        transactions = dbTrans.transaction_sort(amount=True)
+    elif option=="highest":
+        transactions = dbTrans.transaction_sort(amount=True, desc=True)
+    elif option=="oldest":
+        transactions = dbTrans.transaction_sort(date=True)
+    elif option=="newest":
+        transactions = dbTrans.transaction_sort(date=True, desc=True)
+    elif option=="other":
+        redirect("/transactions")
+
+    
+    return uiTrans.transactionShow(transactions=transactions, option=option)
+
+
+
+
     

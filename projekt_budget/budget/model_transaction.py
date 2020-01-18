@@ -79,6 +79,40 @@ class TransactionModelSQLite:
             DELETE FROM transactions
             WHERE id = ?""", (transactionId, ))
         self.conn.commit()
+
+    def transaction_sort(self, transactionId=None, name=None, category=None, amount=None, date=None, desc=False):
+        self.cur.execute("DROP TABLE IF EXISTS transactions_order ;")
+
+        sql="""CREATE TABLE transactions_order (newid integer PRIMARY KEY,
+              id integer,
+              name text NOT NULL,
+              category integer,
+              amount real NOT NULL,
+              date Date NOT NULL,
+              note string);"""
+        self.cur.execute(sql)
+        sql="""INSERT INTO transactions_order (id, name, category, amount, date, note) SELECT * FROM transactions ORDER BY """
+        
+        # sql ="SELECT * FROM transactions ORDER BY "
+        cond = []
+        
+        for field, val in [("id", transactionId), ("name", name), ("amount", amount), ("category", category), ("date", date)]:
+            if val is not None:
+                sql+="?, "
+                cond.append(field)
+
+        sql=sql[:-2]+" "                
+        
+        if desc:
+            sql += "DESC;"
+        else:
+            sql += "ASC;"
+
+        self.cur.execute(sql, tuple(cond))
+        self.cur.execute("SELECT * FROM transactions_order")
+        self.conn.commit()
+        return self.cur.fetchall()
+
             
 
 
