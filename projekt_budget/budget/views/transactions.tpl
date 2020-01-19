@@ -36,7 +36,7 @@ form{ display: inline-block; }
 function showFilter(){
   var block=document.getElementById("divFilter");
   if(block.style.display === "none")
-  { block.style.display="block"; }
+  { block.style.display="inline-block"; }
   else
   { block.style.display="none"; }
   document.getElementById("formFilter").reset();  <!--Treba li rest biti samo na Remove-->
@@ -50,11 +50,29 @@ function hideDiv(id){
   document.getElementById(id).style.display="none";
 }
 
+var catChecked={{categoriesChecked}};
+function check(){
+  if(catChecked ==="[]")
+  {
+	catChecked=[];
+  }
+ var kategorije="{{categories}}";
+  console.log("broj el u categories checked je "+{{categoriesChecked}}.length);
+  console.log("broj el u categories checked je "+catChecked.length);
+  if(catChecked.length > 0){
+    document.getElementById("checkboxAll").checked = catChecked[0] == 1;
+    for (index = 0; index < kategorije.length; index++) {
+      document.getElementById(""+kategorije[index][1]+"").checked = catChecked[index+1] == 1;
+    }
+  }
+
+}
+
 </script>
 
 
 
-<body>
+<body onload="check()">
   <div class="divFrame">
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
 
@@ -71,18 +89,18 @@ function hideDiv(id){
     <div id="divFilter" style="display: none;">
       <form id="formFilter" method="post">
 	<input type="hidden" name="action" value="filter">
-        <label><input type="checkbox" name="checkboxAll" value="all">All</label>
+        <label><input type="checkbox" name="checkboxAll" id="checkboxAll" value="all">All</label>
         % for cat in categories:
-          <label><input type="checkbox" name="{{cat[1]}}" value="{{cat[0]}}">{{cat[1]}}</label>
+          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[1]}}" value="{{cat[0]}}">{{cat[1]}}</label>
         % end
-        <br> Min: <input type="number" name="minAmount" step="0.01">
-        <br> Max: <input type="number" name="maxAmount" step="0.01">
-        <br> Start date: <input type="date" name="minDate">
-        <br> End date: <input type="date" name="maxDate">
+        <br> Min: <input type="number" name="minAmount" step="0.01" value={{minAmount}}>
+        <br> Max: <input type="number" name="maxAmount" step="0.01" value={{maxAmount}}>
+        <br> Start date: <input type="date" name="minDate" value={{minDate}}>
+        <br> End date: <input type="date" name="maxDate" value={{maxDate}}>
         <input type="submit" class="button" name="applyFilter" value="Apply">
       </form>
       <form action="/transactions" method="get">
-        <input type="submit" class="button" name="removeFilter" value="Remove" onclick="showFilter()">
+        <input type="submit" class="button" name="removeFilter" value="Remove">
       </form>
     </div>
 
