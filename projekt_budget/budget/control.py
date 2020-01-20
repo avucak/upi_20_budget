@@ -150,7 +150,7 @@ def edit_transaction(transactionId):
         return uiTrans.transactionShow(categories=categories, transactions=transactions)
         
 @post('/transactions')
-def delete_transaction():
+def transaction_action():
     categories = dbCat.category_select()
     action = request.forms.action
     if action == "delete":
@@ -185,6 +185,21 @@ def delete_transaction():
                     checkboxCategories.append(0)
         transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
         return uiTrans.transactionShow(categories, transactions, checkboxCategories, minAmount, maxAmount, minDate, maxDate)
+    elif action=="sort":
+        option = request.forms.sortOption
+        if option=="lowest":
+            transactions = dbTrans.transaction_sort(amount=True)
+        elif option=="highest":
+            transactions = dbTrans.transaction_sort(amount=True, desc=True)
+        elif option=="oldest":
+            transactions = dbTrans.transaction_sort(date=True)
+        elif option=="newest":
+            transactions = dbTrans.transaction_sort(date=True, desc=True)
+        elif option=="other":
+            redirect("/transactions")
+    
+    return uiTrans.transactionShow(transactions=transactions, categories=categories, option=option)
+    
                 
 
 

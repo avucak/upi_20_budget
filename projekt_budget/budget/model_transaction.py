@@ -100,6 +100,21 @@ class TransactionModelSQLite:
             DELETE FROM transactions
             WHERE id = ?""", (transactionId, ))
         self.conn.commit()
+
+    def transaction_sort(self, category=None, amount=None, date=None, desc=False):    
+        sql ="SELECT * FROM transactions ORDER BY "
+        
+        for field, val in [("amount", amount), ("category", category), ("date", date)]:
+            if val is not None:
+                sql+=field+" "            
+        
+        if desc:
+            sql += "DESC"
+        else:
+            sql += "ASC"
+
+        self.cur.execute(sql)
+        return self.cur.fetchall()
             
 
 

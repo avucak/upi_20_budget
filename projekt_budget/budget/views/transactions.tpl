@@ -53,7 +53,7 @@ function hideDiv(id){
 }
 
 
-function check(){
+function checkboxAndSelect(){
 if ({{sum(categoriesChecked)}}>0){
 	document.getElementById("divFilter").style.display="block";
 	var i;
@@ -62,22 +62,26 @@ if ({{sum(categoriesChecked)}}>0){
 		if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
 	}
 }
+
+document.getElementById("{{option}}").selected=true;
 }
 </script>
 
 
 
-<body onload="check()">
+<body onload="checkboxAndSelect()">
   <div class="divFrame">
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
     <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
-    <form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
-      <select>
-        <option value="lowest">Lowest amount first</option>
-        <option value="highest">Highest amount first</option>
-        <option value="oldest">Oldest transaction first</option>
-        <option value="newest">Newest transaction first</option>
+    <form action="/transactions" method="post"> <input type="hidden" name="action" value="sort">
+	  <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
+      <select id ="sortOption" name="sortOption" value="{{option}}">
+	    <option value="other" id ="other">no sort</option>
+        <option value="lowest" id="lowest">Lowest amount first</option>
+        <option value="highest" id="highest">Highest amount first</option>
+        <option value="oldest" id="oldest">Oldest transaction first</option>
+        <option value="newest" id="newest">Newest transaction first</option>
       </select>
     </form>
     <div id="divFilter" style="display: none;">
@@ -105,7 +109,7 @@ if ({{sum(categoriesChecked)}}>0){
 
     <div class="panel panel-default">
       % for trans in transactions:
-        <div class="panel-body" id="trans{{trans[0]}}">{{trans[0]}}  {{trans[1]}}  {{trans[3]}}  
+        <div class="panel-body" id="trans{{trans[0]}}">{{trans[0]}}  {{trans[1]}}  {{trans[3]}}  {{trans[4]}}
           <form action="/transactions/edit/{{trans[0]}}" method="get">
             <input type="submit" class="button" style="width:50; height:25;" value="Edit">
           </form>
