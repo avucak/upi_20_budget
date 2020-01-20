@@ -30,13 +30,16 @@ div2 {
   border-color: #322a4f;
 }
 form{ display: inline-block; }
+.inputClass {
+margin: 5px;
+}
 </style>
 
 <script>
 function showFilter(){
   var block=document.getElementById("divFilter");
   if(block.style.display === "none")
-  { block.style.display="block"; }
+  { block.style.display="inline-block"; }
   else
   { block.style.display="none"; }
 }
@@ -49,16 +52,26 @@ function hideDiv(id){
   document.getElementById(id).style.display="none";
 }
 
+
+function check(){
+if ({{sum(categoriesChecked)}}>0){
+	document.getElementById("divFilter").style.display="block";
+	var i;
+
+	for (i = 0; i < {{categoriesChecked}}.length; i++) {
+		if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
+	}
+}
+}
 </script>
 
 
 
-<body>
+<body onload="check()">
   <div class="divFrame">
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
-
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
-    <form action="/filter" method="get"><input type="submit" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
+    <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
     <form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
       <select>
         <option value="lowest">Lowest amount first</option>
@@ -68,11 +81,21 @@ function hideDiv(id){
       </select>
     </form>
     <div id="divFilter" style="display: none;">
-      <input type="checkbox" name="food">All<input type="checkbox" name="food">Food <input type="checkbox" name="food">Rent <input type="checkbox" name="food">Clothes
-      <br> Min:<input type="text">   Max:<input type="text">
-      <br>Start date: <input type="date" value="2018-12-01">   End date:<input type="date" value="2018-12-31">
-      <input type="submit" class="button" name="applyFilter" value="Apply">
-      <input type="submit" class="button" name="removeFilter" value="Remove">
+      <form id="formFilter" method="post">
+	<input type="hidden" name="action" value="filter">
+        <label><input type="checkbox" name="checkboxAll" id="0" value="all">All</label>
+        % for cat in categories:
+          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}">{{cat[1]}}</label>
+        % end
+        <br> Min: <input type="number" class="inputClass" name="minAmount" step="0.01" value={{minAmount}}>
+        <br> Max: <input type="number" class="inputClass"  name="maxAmount" step="0.01" value={{maxAmount}}>
+        <br> Start date: <input type="date" class="inputClass" name="minDate" value={{minDate}}>
+        <br> End date: <input type="date" class="inputClass" name="maxDate" value={{maxDate}}>
+        <input type="submit" class="button" name="applyFilter" style="display:inline-block;margin:0" value="Apply" >
+      </form>
+      <form action="/transactions" method="get">
+        <input type="submit" class="button" name="removeFilter" style="display:inline-block" value="Remove">
+      </form>
     </div>
 
     <br>

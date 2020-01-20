@@ -34,7 +34,6 @@ def category_validate(name=None):
 
 @post('/categories')
 def add_category():
-   # name=request.forms.get('cname')
     name=request.forms.cname
     action=request.forms.action
     if action=="add":
@@ -88,8 +87,9 @@ def transaction_validate(name=None, category=None, amount=None, date=None, note=
 
 @route('/transactions')
 def show_transactions():
+    categories = dbCat.category_select()
     transactions = dbTrans.transaction_select()
-    return uiTrans.transactionShow(transactions)
+    return uiTrans.transactionShow(categories=categories, transactions=transactions)
 
 
 @route('/transactions/add')
@@ -115,7 +115,8 @@ def add_transaction():
         categoryId = dbCat.category_select(category)[0][0]
         dbTrans.transaction_insert(name,categoryId,amount,date,note)
         transactions = dbTrans.transaction_select()
-        return uiTrans.transactionShow(transactions)
+        categories = dbCat.category_select()
+        return uiTrans.transactionShow(categories=categories, transactions=transactions)
 
 @route('/transactions/edit/<transactionId>')
 def show_edit_transaction(transactionId):
@@ -145,11 +146,46 @@ def edit_transaction(transactionId):
         categoryId = dbCat.category_select(category)[0][0]
         dbTrans.transaction_update(transactionId,name,categoryId,amount,date,note)
         transactions = dbTrans.transaction_select()
-        return uiTrans.transactionShow(transactions)
+        categories = dbCat.category_select()
+        return uiTrans.transactionShow(categories=categories, transactions=transactions)
         
 @post('/transactions')
 def delete_transaction():
-    dbTrans.transaction_delete(request.forms.transactionId)
-    transactions = dbTrans.transaction_select()
-    return uiTrans.transactionShow(transactions)
+    categories = dbCat.category_select()
+    action = request.forms.action
+    if action == "delete":
+        dbTrans.transaction_delete(request.forms.transactionId)
+        transactions = dbTrans.transaction_select()
+        return uiTrans.transactionShow(categories=categories, transactions=transactions)
+    elif action == "filter":
+        checkedCategories = []
+        checkboxCategories = [1]
+        minAmount, maxAmount, minDate, maxDate= None, None, None, None
+        if request.forms.minAmount:
+            minAmount = request.forms.minAmount
+        if request.forms.maxAmount:
+            maxAmount = request.forms.maxAmount
+        if request.forms.minDate:
+            minDate = request.forms.minDate
+        if request.forms.maxDate:
+            maxDate = request.forms.maxDate
+        
+        if request.forms.checkboxAll:
+            for cat in categories:
+                checkedCategories.append(cat[0])
+                checkboxCategories.append(1)
+        else:
+            checkboxCategories[0]=0
+            for cat in categories:
+                categoryName = str(cat[1])
+                if request.forms.get(categoryName):
+                    checkedCategories.append(cat[0])
+                    checkboxCategories.append(1)
+                else:
+                    checkboxCategories.append(0)
+        transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
+        return uiTrans.transactionShow(categories, transactions, checkboxCategories, minAmount, maxAmount, minDate, maxDate)
+                
+
+
     
