@@ -13,8 +13,8 @@ class CategoryView():
 class TransactionView():
 
     @staticmethod
-    def transactionShow(categories=[], transactions=[], catChecked=[], minA="", maxA="", minD="", maxD=""):
-        return template('transactions', categories=categories, transactions=transactions, categoriesChecked=catChecked, minAmount=minA, maxAmount=maxA, minDate=minD, maxDate=maxD)
+    def transactionShow(categories=[], transactions=[], catChecked=[], minA="", maxA="", minD="", maxD="", option="other"):
+        return template('transactions', categories=categories, transactions=transactions, categoriesChecked=catChecked, minAmount=minA, maxAmount=maxA, minDate=minD, maxDate=maxD, option=option)
     
     @staticmethod
     def transactionAdd(categories=[], disable="false"):
