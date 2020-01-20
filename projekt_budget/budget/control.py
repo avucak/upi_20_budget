@@ -34,7 +34,6 @@ def category_validate(name=None):
 
 @post('/categories')
 def add_category():
-   # name=request.forms.get('cname')
     name=request.forms.cname
     action=request.forms.action
     if action=="add":
@@ -161,23 +160,15 @@ def delete_transaction():
     elif action == "filter":
         checkedCategories = []
         checkboxCategories = [1]
+        minAmount, maxAmount, minDate, maxDate= None, None, None, None
         if request.forms.minAmount:
             minAmount = request.forms.minAmount
-        else:
-            minAmount = None
         if request.forms.maxAmount:
             maxAmount = request.forms.maxAmount
-        else:
-            maxAmount= None
         if request.forms.minDate:
             minDate = request.forms.minDate
-        else:
-            minDate = None
         if request.forms.maxDate:
             maxDate = request.forms.maxDate
-        else:
-            maxDate = None
-        note = request.forms.transactionNote
         
         if request.forms.checkboxAll:
             for cat in categories:

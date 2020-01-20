@@ -30,6 +30,9 @@ div2 {
   border-color: #322a4f;
 }
 form{ display: inline-block; }
+.inputClass {
+margin: 5px;
+}
 </style>
 
 <script>
@@ -39,7 +42,6 @@ function showFilter(){
   { block.style.display="inline-block"; }
   else
   { block.style.display="none"; }
-  document.getElementById("formFilter").reset();  <!--Treba li rest biti samo na Remove-->
 }
 
 function showDiv(id){
@@ -50,43 +52,26 @@ function hideDiv(id){
   document.getElementById(id).style.display="none";
 }
 
-var catChecked={{categoriesChecked}};
+
 function check(){
-  if(catChecked ==="[]")
-  {
-	catChecked=[];
-  }
- var kategorije="{{categories}}";
-  console.log("broj el u categories checked je "+{{categoriesChecked}}.length);
-  console.log("broj el u categories checked je "+catChecked.length);
-  if(catChecked.length > 0){
-    document.getElementById("checkboxAll").checked = catChecked[0] == 1;
-    for (index = 0; index < kategorije.length; index++) {
-      document.getElementById(""+kategorije[index][1]+"").checked = catChecked[index+1] == 1;
-    }
-  }
-
-}
-
-function checkChecked(){
 if ({{sum(categoriesChecked)}}>0){
-document.getElementById("divFilter").style.display="block";
-var i;
-if ({{categoriesChecked}}[0]==1) { 
-for (i = 1; i < {{categoriesChecked}}.length; i++) {document.getElementById(i).checked=true;}}
-for (i = 1; i < {{categoriesChecked}}.length; i++) {
-if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
-}}}
+	document.getElementById("divFilter").style.display="block";
+	var i;
+
+	for (i = 0; i < {{categoriesChecked}}.length; i++) {
+		if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
+	}
+}
+}
 </script>
 
 
 
-<body onload="checkChecked()">
+<body onload="check()">
   <div class="divFrame">
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
-
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
-    <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()"></form>
+    <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
     <form action="/sort" method="get"> <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
       <select>
         <option value="lowest">Lowest amount first</option>
@@ -98,18 +83,18 @@ if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
     <div id="divFilter" style="display: none;">
       <form id="formFilter" method="post">
 	<input type="hidden" name="action" value="filter">
-        <label><input type="checkbox" name="checkboxAll" id="checkboxAll" value="all">All</label>
+        <label><input type="checkbox" name="checkboxAll" id="0" value="all">All</label>
         % for cat in categories:
           <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}">{{cat[1]}}</label>
         % end
-        <br> Min: <input type="number" name="minAmount" step="0.01" value={{minAmount}}>
-        <br> Max: <input type="number" name="maxAmount" step="0.01" value={{maxAmount}}>
-        <br> Start date: <input type="date" name="minDate" value={{minDate}}>
-        <br> End date: <input type="date" name="maxDate" value={{maxDate}}>
-        <input type="submit" class="button" name="applyFilter" value="Apply">
+        <br> Min: <input type="number" class="inputClass" name="minAmount" step="0.01" value={{minAmount}}>
+        <br> Max: <input type="number" class="inputClass"  name="maxAmount" step="0.01" value={{maxAmount}}>
+        <br> Start date: <input type="date" class="inputClass" name="minDate" value={{minDate}}>
+        <br> End date: <input type="date" class="inputClass" name="maxDate" value={{maxDate}}>
+        <input type="submit" class="button" name="applyFilter" style="display:inline-block;margin:0" value="Apply" >
       </form>
       <form action="/transactions" method="get">
-        <input type="submit" class="button" name="removeFilter" value="Remove">
+        <input type="submit" class="button" name="removeFilter" style="display:inline-block" value="Remove">
       </form>
     </div>
 
