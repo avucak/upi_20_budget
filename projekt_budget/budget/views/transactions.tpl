@@ -68,11 +68,20 @@ function check(){
 
 }
 
+function checkChecked(){
+if ({{sum(categoriesChecked)}}>0){
+document.getElementById("divFilter").style.display="block";
+var i;
+if ({{categoriesChecked}}[0]==1) { 
+for (i = 1; i < {{categoriesChecked}}.length; i++) {document.getElementById(i).checked=true;}}
+for (i = 1; i < {{categoriesChecked}}.length; i++) {
+if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
+}}}
 </script>
 
 
 
-<body onload="check()">
+<body onload="checkChecked()">
   <div class="divFrame">
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
 
@@ -91,7 +100,7 @@ function check(){
 	<input type="hidden" name="action" value="filter">
         <label><input type="checkbox" name="checkboxAll" id="checkboxAll" value="all">All</label>
         % for cat in categories:
-          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[1]}}" value="{{cat[0]}}">{{cat[1]}}</label>
+          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}">{{cat[1]}}</label>
         % end
         <br> Min: <input type="number" name="minAmount" step="0.01" value={{minAmount}}>
         <br> Max: <input type="number" name="maxAmount" step="0.01" value={{maxAmount}}>
