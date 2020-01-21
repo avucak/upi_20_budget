@@ -28,6 +28,7 @@ div2 {
   font-size: 12px;
   border: 1px solid black;
   border-color: #322a4f;
+  font-family: "Times New Roman", Times, serif;
 }
 form{ display: inline-block; }
 .inputClass {
@@ -65,6 +66,8 @@ if ({{sum(categoriesChecked)}}>0){
 
 document.getElementById("{{option}}").selected=true;
 }
+
+
 </script>
 
 
@@ -74,7 +77,7 @@ document.getElementById("{{option}}").selected=true;
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
     <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
-    <form action="/transactions" method="post"> <input type="hidden" name="action" value="sort">
+    <form action="/transactions" method="post" name="formSort"> <input type="hidden" name="action" value="sort">
 	  <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
       <select id ="sortOption" name="sortOption" value="{{option}}">
 	    <option value="other" id ="other">no sort</option>
@@ -85,7 +88,7 @@ document.getElementById("{{option}}").selected=true;
       </select>
     </form>
     <div id="divFilter" style="display: none;">
-      <form id="formFilter" method="post">
+      <form id="formFilter" name="formFilter" method="post">
 	<input type="hidden" name="action" value="filter">
         <label><input type="checkbox" name="checkboxAll" id="0" value="all">All</label>
         % for cat in categories:
@@ -104,9 +107,8 @@ document.getElementById("{{option}}").selected=true;
 
     <br>
     <hr>
-    <br>
-    <input type="month" value="2019-12">
-
+	<h2> Transactions </h2>
+	<hr>
     <div class="panel panel-default">
       % for trans in transactions:
         <div class="panel-body" id="trans{{trans[0]}}">{{trans[0]}}  {{trans[1]}}  {{trans[3]}}  {{trans[4]}}

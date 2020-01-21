@@ -157,7 +157,8 @@ def transaction_action():
         dbTrans.transaction_delete(request.forms.transactionId)
         transactions = dbTrans.transaction_select()
         return uiTrans.transactionShow(categories=categories, transactions=transactions)
-    elif action == "filter":
+    
+    if action == "filter" or action=="sort":
         checkedCategories = []
         checkboxCategories = [1]
         minAmount, maxAmount, minDate, maxDate= None, None, None, None
@@ -183,22 +184,42 @@ def transaction_action():
                     checkboxCategories.append(1)
                 else:
                     checkboxCategories.append(0)
-        transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
-        return uiTrans.transactionShow(categories, transactions, checkboxCategories, minAmount, maxAmount, minDate, maxDate)
-    elif action=="sort":
+                    
         option = request.forms.sortOption
-        if option=="lowest":
-            transactions = dbTrans.transaction_sort(amount=True)
-        elif option=="highest":
-            transactions = dbTrans.transaction_sort(amount=True, desc=True)
-        elif option=="oldest":
-            transactions = dbTrans.transaction_sort(date=True)
-        elif option=="newest":
-            transactions = dbTrans.transaction_sort(date=True, desc=True)
-        elif option=="other":
-            redirect("/transactions")
+        if option=="":
+            option="other"
+        transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
+        #return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option)
     
-    return uiTrans.transactionShow(transactions=transactions, categories=categories, option=option)
+
+        # sort
+        
+        if option=="lowest":
+            transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
+        elif option=="highest":
+            transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, amountSort=True, descSort=True)
+        elif option=="oldest":
+            transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, dateSort=True)
+        elif option=="newest":
+            transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, dateSort=True, descSort=True)
+
+        return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option)
+    
+##    if action=="sort":
+##            
+##        option = request.forms.sortOption
+##        if option=="lowest":
+##            transactions = dbTrans.transaction_sort(amount=True)
+##        elif option=="highest":
+##            transactions = dbTrans.transaction_sort(amount=True, desc=True)
+##        elif option=="oldest":
+##            transactions = dbTrans.transaction_sort(date=True)
+##        elif option=="newest":
+##            transactions = dbTrans.transaction_sort(date=True, desc=True)
+##        elif option=="other":
+##            redirect("/transactions")
+##    
+##    return uiTrans.transactionShow(transactions=transactions, categories=categories, option=option)
     
                 
 

@@ -27,7 +27,8 @@ class TransactionModelSQLite:
               note string,
               FOREIGN KEY(category) REFERENCES categories(id));""")
 
-    def transaction_select(self, transactionId=None, name=None, category=None, categories=None, amount=None, minAmount=None, maxAmount=None, date=None, minDate=None, maxDate=None):
+    def transaction_select(self, transactionId=None, name=None, category=None, categories=None, amount=None, minAmount=None, maxAmount=None, date=None, minDate=None, maxDate=None,
+                           amountSort=None, dateSort=None, categorySort= None, descSort=False):
         sql = "SELECT * FROM transactions "
         sql_where, sql_and = False, False
         cond = []
@@ -40,7 +41,9 @@ class TransactionModelSQLite:
                 q += ")"
             else:
                 categories = None
-        for field, op, val in [("id", "=", transactionId), ("name", "=", name), ("amount", "=", amount), ("amount", ">=", minAmount), ("amount", "<=", maxAmount), ("category", "=", category), ("category", "IN", categories),("date", "=", date), ("date", ">=", minDate), ("date", "<=", maxDate)]:
+                
+        for field, op, val in [("id", "=", transactionId), ("name", "=", name), ("amount", "=", amount), ("amount", ">=", minAmount), ("amount", "<=", maxAmount),
+                               ("category", "=", category), ("category", "IN", categories),("date", "=", date), ("date", ">=", minDate), ("date", "<=", maxDate)]:
             if val is not None:
                 if not sql_where:
                     sql_where = True
@@ -55,17 +58,35 @@ class TransactionModelSQLite:
                     sql += "{} {} ? ".format(field, op)
                     cond.append(val)
                 sql_and = True
+        
+        # za sortiranje
+        if amountSort or dateSort:
+            sql+=" ORDER BY "
+        
+            for field, val in [("amount", amountSort), ("category", categorySort), ("date", dateSort)]:
+                if val is not None:
+                    sql+=field+" "            
+        
+            if descSort:
+                sql += "DESC"
+            else:
+                sql += "ASC"
+
+        
+        self.cur.execute(sql, tuple(cond))
+        return self.cur.fetchall()
+
+
                 
-
-        try:
-            self.cur.execute(sql, tuple(cond))
-            return self.cur.fetchall()
-        except:
-            ispis=""
-            for c in cond:
-                ispis+=c+" "
-            raise Exception("Condition izgleda ovako: "+ispis+",a sam sql ovako:"+sql)
-
+       # try:
+##            self.cur.execute(sql, tuple(cond))
+##            return self.cur.fetchall()
+##        except:
+##            ispis=""
+##            for c in cond:
+##                ispis+=c+" "
+##            raise Exception("Condition izgleda ovako: "+ispis+",a sam sql ovako:"+sql)
+       
     def transaction_insert(self, name, category, amount, date, note=""):
         try:
             float(amount)
@@ -101,20 +122,21 @@ class TransactionModelSQLite:
             WHERE id = ?""", (transactionId, ))
         self.conn.commit()
 
-    def transaction_sort(self, category=None, amount=None, date=None, desc=False):    
-        sql ="SELECT * FROM transactions ORDER BY "
-        
-        for field, val in [("amount", amount), ("category", category), ("date", date)]:
-            if val is not None:
-                sql+=field+" "            
-        
-        if desc:
-            sql += "DESC"
-        else:
-            sql += "ASC"
-
-        self.cur.execute(sql)
-        return self.cur.fetchall()
+##    def transaction_sort(self, conditions=[], category=None, amount=None, date=None, desc=False):        
+##   
+##        sql ="SELECT * FROM transactions ORDER BY "
+##        
+##        for field, val in [("amount", amount), ("category", category), ("date", date)]:
+##            if val is not None:
+##                sql+=field+" "            
+##        
+##        if desc:
+##            sql += "DESC"
+##        else:
+##            sql += "ASC"
+##
+##        self.cur.execute(sql)
+##        return self.cur.fetchall()
             
 
 
