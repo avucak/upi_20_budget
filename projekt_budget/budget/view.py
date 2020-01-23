@@ -28,4 +28,10 @@ class TransactionView():
     def transactionEdit(categories=[], validation="", name="", category="", amount="", date="", note=""):
         return template("edit_transaction", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note)
 
+    @staticmethod
+    def overviewOptions(categories=[], minD="", maxD=""):
+        return template('overview_options', categories=categories, minDate=minD, maxDate=maxD)
 
+    @staticmethod
+    def overviewShow(categories=[], transactions=[]):
+        return template('overview', categories=categories, transactions=transactions)

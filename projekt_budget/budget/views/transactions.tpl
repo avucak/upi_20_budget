@@ -109,7 +109,7 @@ document.getElementById("{{option}}").selected=true;
 
     <div class="panel panel-default">
       % for trans in transactions:
-        <div class="panel-body" id="trans{{trans[0]}}">{{trans[0]}}  {{trans[1]}}  {{trans[3]}}  {{trans[4]}}
+        <div class="panel-body" id="trans{{trans[0]}}">{{trans[1]}}  {{trans[3]}}  {{trans[4]}}
           <form action="/transactions/edit/{{trans[0]}}" method="get">
             <input type="submit" class="button" style="width:50; height:25;" value="Edit">
           </form>

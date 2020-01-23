@@ -6,6 +6,7 @@ from model_category import CategoryModelSQLite
 from model_transaction import TransactionModelSQLite
 
 from datetime import datetime
+import calendar
 
 filename = abspath(join(dirname(__file__), "..", "category.db"))
 
@@ -199,6 +200,25 @@ def transaction_action():
             redirect("/transactions")
     
     return uiTrans.transactionShow(transactions=transactions, categories=categories, option=option)
+
+@route('/overview')
+def overview_options():
+    categories = dbCat.category_select()
+
+    today = datetime.today().strftime('%Y-%m-%d')
+    daysInCurrentMonth = calendar.monthrange(int(today[:4]),int(today[5:7]))[1]
+    firstDayCurrentMonth = datetime.today().replace(day=1).strftime('%Y-%m-%d')
+    lastDayCurrentMonth = datetime.today().replace(day=daysInCurrentMonth).strftime('%Y-%m-%d')
+    return uiTrans.overviewOptions(categories=categories, minD=firstDayCurrentMonth, maxD=lastDayCurrentMonth)
+
+@post('/overview/show')
+def show_overview():
+    categories = dbCat.category_select()
+    transactions = dbTrans.transaction_select()
+    return uiTrans.overviewShow(categories, transactions)
+
+
+
     
                 
 
