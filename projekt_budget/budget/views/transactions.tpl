@@ -77,8 +77,8 @@ document.getElementById("{{option}}").selected=true;
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
     <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
-    <form action="/transactions" method="post" name="formSort"> <input type="hidden" name="action" value="sort">
-	  <input type="submit" class="button" name="sort_transaction" value="Sort transactions">
+    <form action="/transactions" method="post" name="formSort"> <input type="hidden" name="action" value="sortFilter">
+	  <input type="submit" class="button" name="actionButton" value="Sort">
       <select id ="sortOption" name="sortOption" value="{{option}}">
 	    <option value="other" id ="other">no sort</option>
         <option value="lowest" id="lowest">Lowest amount first</option>
@@ -86,10 +86,7 @@ document.getElementById("{{option}}").selected=true;
         <option value="oldest" id="oldest">Oldest transaction first</option>
         <option value="newest" id="newest">Newest transaction first</option>
       </select>
-    </form>
     <div id="divFilter" style="display: none;">
-      <form id="formFilter" name="formFilter" method="post">
-	<input type="hidden" name="action" value="filter">
         <label><input type="checkbox" name="checkboxAll" id="0" value="all">All</label>
         % for cat in categories:
           <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}">{{cat[1]}}</label>
@@ -98,8 +95,8 @@ document.getElementById("{{option}}").selected=true;
         <br> Max: <input type="number" class="inputClass"  name="maxAmount" step="0.01" value={{maxAmount}}>
         <br> Start date: <input type="date" class="inputClass" name="minDate" value={{minDate}}>
         <br> End date: <input type="date" class="inputClass" name="maxDate" value={{maxDate}}>
-        <input type="submit" class="button" name="applyFilter" style="display:inline-block;margin:0" value="Apply" >
-      </form>
+        <input type="submit" class="button" name="actionButton" style="display:inline-block;margin:0" value="Apply" >
+    </form>
       <form action="/transactions" method="get">
         <input type="submit" class="button" name="removeFilter" style="display:inline-block" value="Remove">
       </form>

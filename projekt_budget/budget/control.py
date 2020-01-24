@@ -158,9 +158,14 @@ def transaction_action():
         transactions = dbTrans.transaction_select()
         return uiTrans.transactionShow(categories=categories, transactions=transactions)
     
-    if action == "filter" or action=="sort":
+    if action == "sortFilter":
         checkedCategories = []
         checkboxCategories = [1]
+        buttonClicked= request.forms.actionButton
+        #if buttonClicked=="Apply":
+         #   return "A"
+        #else:
+         #   return "B"
         minAmount, maxAmount, minDate, maxDate= None, None, None, None
         if request.forms.minAmount:
             minAmount = request.forms.minAmount
