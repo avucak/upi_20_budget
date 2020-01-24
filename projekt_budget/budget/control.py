@@ -29,8 +29,8 @@ def category_validate(name=None):
         elif name.strip()=="":
             valid="Category must have a name"
     return valid
-        
-        
+
+
 
 @post('/categories')
 def add_category():
@@ -80,16 +80,21 @@ def transaction_validate(name=None, category=None, amount=None, date=None, note=
             valid["date"] = "Transaction must have a date"
         else:
             today = datetime.today().strftime('%Y-%m-%d')
-            if date > today:            
-                valid["date"] = "Transaction date must be today or earlier"      
+            if date > today:
+                valid["date"] = "Transaction date must be today or earlier"
     return valid
 
 
 @route('/transactions')
 def show_transactions():
     categories = dbCat.category_select()
-    transactions = dbTrans.transaction_select()
-    return uiTrans.transactionShow(categories=categories, transactions=transactions)
+    # ako radimo remove kod filtera, a informacije sortirane, trebamo proslijediti sort opciju
+    option=request.query.optionSort
+    if option=="":
+        option="other"
+    options=sortOptions(option)
+    transactions = dbTrans.transaction_select(amountSort=options[0], dateSort=options[1], descSort=options[2])
+    return uiTrans.transactionShow(categories=categories, transactions=transactions, option=option)
 
 
 @route('/transactions/add')
@@ -97,7 +102,7 @@ def show_add_transaction():
     categories = dbCat.category_select()
     if categories == []:
         return uiTrans.transactionAdd(disable="true")
-    return uiTrans.transactionAdd(categories=categories)   
+    return uiTrans.transactionAdd(categories=categories)
 
 @post('/transactions/add')
 def add_transaction():
@@ -106,10 +111,10 @@ def add_transaction():
     amount = request.forms.transactionAmount
     date = request.forms.transactionDate
     note = request.forms.transactionNote
-    
+
     validation = transaction_validate(name,category,amount,date,note)
     categories=dbCat.category_select()
-    if validation:  
+    if validation:
         return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note,add="True")
     else:
         categoryId = dbCat.category_select(category)[0][0]
@@ -126,7 +131,7 @@ def show_edit_transaction(transactionId):
     amount = transaction[3]
     date = transaction[4]
     note = transaction[5]
-    
+
     categories = dbCat.category_select()
     return uiTrans.transactionEdit(categories=categories,validation={},name=name,category=category,amount=amount,date=date,note=note)
 
@@ -137,10 +142,10 @@ def edit_transaction(transactionId):
     amount = request.forms.transactionAmount
     date = request.forms.transactionDate
     note = request.forms.transactionNote
-    
+
     validation = transaction_validate(name,category,amount,date,note)
     categories = dbCat.category_select()
-    if validation:  
+    if validation:
         return uiTrans.transactionAddValidate(categories,validation,name,category,amount,date,note,add="False")
     else:
         categoryId = dbCat.category_select(category)[0][0]
@@ -148,7 +153,7 @@ def edit_transaction(transactionId):
         transactions = dbTrans.transaction_select()
         categories = dbCat.category_select()
         return uiTrans.transactionShow(categories=categories, transactions=transactions)
-        
+
 @post('/transactions')
 def transaction_action():
     categories = dbCat.category_select()
@@ -157,7 +162,12 @@ def transaction_action():
         dbTrans.transaction_delete(request.forms.transactionId)
         transactions = dbTrans.transaction_select()
         return uiTrans.transactionShow(categories=categories, transactions=transactions)
-    elif action == "filter":
+
+    if action == "sortFilter":
+        buttonClicked = request.forms.actionButton
+        previouslyFiltered = request.forms.filtered == "True"
+        previouslySorted = request.forms.sorted == "True"
+        # filter information
         checkedCategories = []
         checkboxCategories = [1]
         minAmount, maxAmount, minDate, maxDate= None, None, None, None
@@ -169,7 +179,6 @@ def transaction_action():
             minDate = request.forms.minDate
         if request.forms.maxDate:
             maxDate = request.forms.maxDate
-        
         if request.forms.checkboxAll:
             for cat in categories:
                 checkedCategories.append(cat[0])
@@ -183,24 +192,37 @@ def transaction_action():
                     checkboxCategories.append(1)
                 else:
                     checkboxCategories.append(0)
-        transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
-        return uiTrans.transactionShow(categories, transactions, checkboxCategories, minAmount, maxAmount, minDate, maxDate)
-    elif action=="sort":
+        # sort information
         option = request.forms.sortOption
-        if option=="lowest":
-            transactions = dbTrans.transaction_sort(amount=True)
-        elif option=="highest":
-            transactions = dbTrans.transaction_sort(amount=True, desc=True)
-        elif option=="oldest":
-            transactions = dbTrans.transaction_sort(date=True)
-        elif option=="newest":
-            transactions = dbTrans.transaction_sort(date=True, desc=True)
-        elif option=="other":
-            redirect("/transactions")
-    
-    return uiTrans.transactionShow(transactions=transactions, categories=categories, option=option)
-    
-                
+        if option=="":
+            option="other"
+        options=sortOptions(option)
+        if buttonClicked=="Apply": #filter
+            filtered = True
+            sort = previouslySorted
+            if previouslySorted:
+                transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, amountSort=options[0], dateSort=options[1], descSort=options[2])
+            else:
+                transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
+        else: # sort
+            filtered = previouslyFiltered
+            sort = True
+            if previouslyFiltered:
+                transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, amountSort=options[0], dateSort=options[1], descSort=options[2])
+            else:
+                transactions = dbTrans.transaction_select(amountSort=options[0], dateSort=options[1], descSort=options[2])
+        return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option, filtered=filtered, sort=sort)
 
-
-    
+def sortOptions(option):
+    options=[None, None, None] #amountSort, dateSort, descSort
+    if option=="lowest":
+        options[0] = True
+    elif option=="highest":
+        options[0] = True
+        options[2] = True
+    elif option=="oldest":
+        options[1] = True
+    elif option=="newest":
+        options[1] = True
+        options[2] = True
+    return options
