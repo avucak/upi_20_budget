@@ -199,19 +199,19 @@ def transaction_action():
         options=sortOptions(option)
         if buttonClicked=="Apply": #filter
             filtered = True
-            sorted = previouslySorted
+            sort = previouslySorted
             if previouslySorted:
                 transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, amountSort=options[0], dateSort=options[1], descSort=options[2])
             else:
                 transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate)
         else: # sort
             filtered = previouslyFiltered
-            sorted = True
+            sort = True
             if previouslyFiltered:
                 transactions = dbTrans.transaction_select(categories=checkedCategories, minAmount=minAmount, maxAmount=maxAmount, minDate=minDate, maxDate=maxDate, amountSort=options[0], dateSort=options[1], descSort=options[2])
             else:
                 transactions = dbTrans.transaction_select(amountSort=options[0], dateSort=options[1], descSort=options[2])
-        return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option, filtered=filtered, sorted=sorted)
+        return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option, filtered=filtered, sort=sort)
 
 def sortOptions(option):
     options=[None, None, None] #amountSort, dateSort, descSort

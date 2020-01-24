@@ -78,7 +78,7 @@ function checkboxAndSelect(){
     <form action="/transactions" method="post" name="formSort">
        <input type="hidden" name="action" value="sortFilter">
        <input type="hidden" name="filtered" value="{{filtered}}">
-       <input type="hidden" name="sorted" value="{{sorted}}">
+       <input type="hidden" name="sorted" value="{{sort}}">
 	     <input type="submit" class="button" name="actionButton" value="Sort">
        <select id ="sortOption" name="sortOption" value="{{option}}">
 	     <option value="other" id ="other">no sort</option>
