@@ -13,9 +13,9 @@ class CategoryView():
 class TransactionView():
 
     @staticmethod
-    def transactionShow(categories=[], transactions=[], catChecked=[], minA="", maxA="", minD="", maxD="", option="other"):
-        return template('transactions', categories=categories, transactions=transactions, categoriesChecked=catChecked, minAmount=minA, maxAmount=maxA, minDate=minD, maxDate=maxD, option=option)
-    
+    def transactionShow(categories=[], transactions=[], catChecked=[], minA="", maxA="", minD="", maxD="", option="other", filtered=False, sorted=False):
+        return template('transactions', categories=categories, transactions=transactions, categoriesChecked=catChecked, minAmount=minA, maxAmount=maxA, minDate=minD, maxDate=maxD, option=option, filtered=filtered, sorted=sorted)
+
     @staticmethod
     def transactionAdd(categories=[], disable="false"):
         return template("add_transaction", categories=categories, disable=disable)
@@ -27,5 +27,3 @@ class TransactionView():
     @staticmethod
     def transactionEdit(categories=[], validation="", name="", category="", amount="", date="", note=""):
         return template("edit_transaction", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note)
-
-

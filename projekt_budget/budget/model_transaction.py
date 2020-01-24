@@ -12,11 +12,11 @@ class IntegrityError(Exception):
 
 
 class TransactionModelSQLite:
-    
+
     def __init__(self, filename):
         self.conn = sqlite3.Connection(filename)
         self.cur = self.conn.cursor()
-        self.cur.execute("PRAGMA foreign_keys = ON")      
+        self.cur.execute("PRAGMA foreign_keys = ON")
         self.cur.executescript("""
             CREATE TABLE IF NOT EXISTS transactions(
               id integer PRIMARY KEY,
@@ -41,7 +41,7 @@ class TransactionModelSQLite:
                 q += ")"
             else:
                 categories = None
-                
+
         for field, op, val in [("id", "=", transactionId), ("name", "=", name), ("amount", "=", amount), ("amount", ">=", minAmount), ("amount", "<=", maxAmount),
                                ("category", "=", category), ("category", "IN", categories),("date", "=", date), ("date", ">=", minDate), ("date", "<=", maxDate)]:
             if val is not None:
@@ -58,35 +58,24 @@ class TransactionModelSQLite:
                     sql += "{} {} ? ".format(field, op)
                     cond.append(val)
                 sql_and = True
-        
+
         # za sortiranje
         if amountSort or dateSort:
             sql+=" ORDER BY "
-        
+
             for field, val in [("amount", amountSort), ("category", categorySort), ("date", dateSort)]:
                 if val is not None:
-                    sql+=field+" "            
-        
+                    sql+=field+" "
             if descSort:
                 sql += "DESC"
             else:
                 sql += "ASC"
 
-        
+
         self.cur.execute(sql, tuple(cond))
         return self.cur.fetchall()
 
 
-                
-       # try:
-##            self.cur.execute(sql, tuple(cond))
-##            return self.cur.fetchall()
-##        except:
-##            ispis=""
-##            for c in cond:
-##                ispis+=c+" "
-##            raise Exception("Condition izgleda ovako: "+ispis+",a sam sql ovako:"+sql)
-       
     def transaction_insert(self, name, category, amount, date, note=""):
         try:
             float(amount)
@@ -100,8 +89,6 @@ class TransactionModelSQLite:
             self.conn.commit()
         except sqlite3.IntegrityError:
             raise IntegrityError("Greška!")
-            
-
 
     def transaction_update(self, transactionId, name, category, amount, date, note=""):
         if not self.transaction_select(transactionId=transactionId):
@@ -122,23 +109,6 @@ class TransactionModelSQLite:
             WHERE id = ?""", (transactionId, ))
         self.conn.commit()
 
-##    def transaction_sort(self, conditions=[], category=None, amount=None, date=None, desc=False):        
-##   
-##        sql ="SELECT * FROM transactions ORDER BY "
-##        
-##        for field, val in [("amount", amount), ("category", category), ("date", date)]:
-##            if val is not None:
-##                sql+=field+" "            
-##        
-##        if desc:
-##            sql += "DESC"
-##        else:
-##            sql += "ASC"
-##
-##        self.cur.execute(sql)
-##        return self.cur.fetchall()
-            
-
 
 
 class Transaction:
@@ -152,7 +122,3 @@ class Transaction:
 
     def __repr__(self):
         return "Transaction(" +self._name+", "+ self._category+", "+str(self._amount) +", "+self._date+")"
-
-
-
-    
