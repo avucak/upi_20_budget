@@ -58,12 +58,6 @@ function checkboxAndSelect(){
   }
   document.getElementById("{{option}}").selected=true;
 }
-
-	for (i = 0; i < {{categoriesChecked}}.length; i++) {
-		if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
-	}
-}
-}
 </script>
 
 
