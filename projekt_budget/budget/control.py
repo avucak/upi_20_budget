@@ -204,7 +204,6 @@ def transaction_action():
 @route('/overview')
 def overview_options():
     categories = dbCat.category_select()
-
     today = datetime.today().strftime('%Y-%m-%d')
     daysInCurrentMonth = calendar.monthrange(int(today[:4]),int(today[5:7]))[1]
     firstDayCurrentMonth = datetime.today().replace(day=1).strftime('%Y-%m-%d')
@@ -215,7 +214,34 @@ def overview_options():
 def show_overview():
     categories = dbCat.category_select()
     transactions = dbTrans.transaction_select()
-    return uiTrans.overviewShow(categories, transactions)
+    checkedCategories=[]
+    for cat in categories:
+        if request.forms.get(cat[1]):
+            c=[cat[0], cat[1]]
+            checkedCategories.append(c)
+            
+    if checkedCategories==[]:
+        return uiTrans.overviewShow(categories=categories, transactions=transactions)
+
+        
+    totalSum=[0 for c in categories]
+    minDate=request.forms.minDate
+    maxDate=request.forms.maxDate
+    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
+
+    for cat in checkedCategories:
+        for t in transactions:
+            if t[2]==cat[0]:
+                totalSum[cat[0]-1]+=abs(t[3])
+                
+    totalAverage=[0 for c in categories]
+    for i in range(len(totalAverage)):
+        totalAverage[i]=totalSum[i]/sum(totalSum)
+
+    pieChartData=[]
+    for cat in checkedCategories:
+        pieChartData.append([cat[0], float('%0.2f' % (totalAverage[cat[0]-1]*100))])
+    return uiTrans.overviewShow(categories=categories, transactions=transactions, checkedCategories=checkedCategories, totalSum=totalSum, totalAverage=totalAverage, pieChartData=pieChartData)
 
 
 

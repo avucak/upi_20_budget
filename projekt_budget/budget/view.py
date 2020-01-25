@@ -33,5 +33,5 @@ class TransactionView():
         return template('overview_options', categories=categories, minDate=minD, maxDate=maxD)
 
     @staticmethod
-    def overviewShow(categories=[], transactions=[]):
-        return template('overview', categories=categories, transactions=transactions)
+    def overviewShow(categories=[], transactions=[], checkedCategories=[], totalSum=[], totalAverage=[], pieChartData=[]):
+        return template('overview', categories=categories, transactions=transactions, checkedCategories=checkedCategories, totalSum=totalSum, totalAverage=totalAverage, pieChartData=pieChartData)

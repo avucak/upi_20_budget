@@ -36,6 +36,45 @@ margin: 5px;
 </style>
 
 <script>
+function checkBoxCheckAll(){
+	if (document.getElementById(0).checked){
+		% for cat in categories:
+			document.getElementById({{cat[0]}}).checked=true;
+		% end
+		}
+	checkedAll=true;
+	% for cat in categories:
+		if (document.getElementById({{cat[0]}}).checked==false){checkedAll=false;}
+	% end
+	if(checkedAll && !document.getElementById(0).checked)
+	{
+		% for cat in categories:
+			document.getElementById({{cat[0]}}).checked=false;
+		% end
+	}
+	
+}
+
+function checkBoxChecking(){
+	
+	allChecked=true;
+	% for cat in categories:
+		if(document.getElementById({{cat[0]}}).checked==false) {allChecked = false;}
+	% end
+	
+		
+	if(allChecked) {document.getElementById(0).checked=true;}
+	else {document.getElementById(0).checked=false;}
+	
+	if (document.getElementById(0).checked){
+		% for cat in categories:
+			document.getElementById({{cat[0]}}).checked=true;
+		% end
+		}
+	
+	
+
+}
 </script>
 
 
@@ -47,9 +86,9 @@ margin: 5px;
         <br> Start date: <input type="date" class="inputClass" name="minDate" value={{minDate}}>
         <br> End date: <input type="date" class="inputClass" name="maxDate" value={{maxDate}}>
         <p>Categories included</p>
-        <label><input type="checkbox" name="checkboxAll" id="0" value="all" checked>All</label>
+        <label><input type="checkbox" name="checkboxAll" id="0" value="all" checked onclick="checkBoxCheckAll()">All</label>
         % for cat in categories:
-          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}" checked>{{cat[1]}}</label>
+          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}" checked onclick="checkBoxChecking()">{{cat[1]}}</label>
         % end
 	<br><br>
         <input type="submit" class="button" style="display:inline-block;margin:0" value="Show transactions" >
