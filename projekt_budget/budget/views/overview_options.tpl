@@ -91,10 +91,8 @@ function checkBoxChecking(){
           <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}" checked onclick="checkBoxChecking()">{{cat[1]}}</label>
         % end
 		<br><br>
-        <input type="submit" class="button" style="display:inline-block;margin:0" value="Show transactions" >
-	  </form>
-	  <form action="/overview/report" method="post">
-        <input type="submit" class="button" style="display:inline-block" value="Create report">
+        <input type="submit" class="button"  style="display:inline-block;margin:0" value="Show transactions" >
+        <input type="submit" class="button" formaction="/overview/report" style="display:inline-block" value="Create report">
 	  </form>
       
       <form action=".." method="get">

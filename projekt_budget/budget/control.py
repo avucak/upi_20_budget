@@ -231,12 +231,10 @@ def overview_report():
     transactions = dbTrans.transaction_select()
     checkedCategories=[]
     for cat in categories:
-        # return request.forms.get(cat[1])
         if request.forms.get(cat[1]):
-            
             c=[cat[0], cat[1]]
             checkedCategories.append(c)
-
+            
     totalSum=[0 for c in categories]
     minDate=request.forms.minDate
     maxDate=request.forms.maxDate
@@ -251,13 +249,24 @@ def overview_report():
     for i in range(len(totalAverage)):
         totalAverage[i]=totalSum[i]/sum(totalSum)
 
+
+    txt="------------------------------------------------------------------------\n"
+    txt+="From "+minDate + " to "+maxDate+"\n------------------------------------------------------------------------\n\n"
+    for cat in checkedCategories:
+        txt+="--- "+ cat[1] + " ---\n"
+        for t in transactions:
+            if t[2]==cat[0]:
+                txt+=t[1]+"###"+cat[1]+"###"+str(t[3])+"###"+t[4]+"###"+t[5]+"\n"
+        txt+="Category total: "+str(totalSum[cat[0]-1])+"###Percentage: " + '%.2f' % (totalAverage[cat[0]-1]*100)+"%\n"
+        txt+="------------------------------------------------------------------------\n\n"
+    
     # spremanje u datoteku
-    f= open("budget_report.txt","w+")
-    for i in range(10):
-        f.write("This is line %d\r\n" % (i+1))
+    fileName="budget_report.txt"
+    f= open(fileName,"w+")
+    f.write(txt)
     f.close()
 
-    return uiTrans.overviewReport(categories, minDate, maxDate)
+    return uiTrans.overviewReport(categories=categories, minD=minDate, maxD=maxDate, checkedCategories=checkedCategories, fileName=fileName)
 
 @post('/overview/show')
 def show_overview():
