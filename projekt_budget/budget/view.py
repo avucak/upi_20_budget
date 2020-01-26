@@ -27,3 +27,11 @@ class TransactionView():
     @staticmethod
     def transactionEdit(categories=[], validation="", name="", category="", amount="", date="", note=""):
         return template("edit_transaction", categories=categories, validation=validation, name=name, category=category, amount=amount, date=date, note=note)
+
+    @staticmethod
+    def overviewOptions(categories=[], minD="", maxD=""):
+        return template('overview_options', categories=categories, minDate=minD, maxDate=maxD)
+
+    @staticmethod
+    def overviewShow(categories=[], transactions=[], checkedCategories=[], totalSum=[], totalAverage=[], pieChartData=[]):
+        return template('overview', categories=categories, transactions=transactions, checkedCategories=checkedCategories, totalSum=totalSum, totalAverage=totalAverage, pieChartData=pieChartData)
