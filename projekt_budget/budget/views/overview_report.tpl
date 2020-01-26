@@ -99,6 +99,7 @@ function checkBoxChecking(){
       
       <form action=".." method="get">
         <input type="submit" class="button" value="Discard">
+		<p style="color: red"> File {{fileName}} was succesfully created! </p>
       </form>
   </div>
 </body>

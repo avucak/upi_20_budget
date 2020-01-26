@@ -216,12 +216,48 @@ def transaction_action():
 
 @route('/overview')
 def overview_options():
+        
     categories = dbCat.category_select()
     today = datetime.today().strftime('%Y-%m-%d')
     daysInCurrentMonth = calendar.monthrange(int(today[:4]),int(today[5:7]))[1]
     firstDayCurrentMonth = datetime.today().replace(day=1).strftime('%Y-%m-%d')
-    lastDayCurrentMonth = datetime.today().replace(day=daysInCurrentMonth).strftime('%Y-%m-%d')
+    lastDayCurrentMonth = datetime.today().replace(day=daysInCurrentMonth).strftime('%Y-%m-%d')    
     return uiTrans.overviewOptions(categories=categories, minD=firstDayCurrentMonth, maxD=lastDayCurrentMonth)
+
+@post('/overview/report')
+def overview_report():
+    
+    categories = dbCat.category_select()
+    transactions = dbTrans.transaction_select()
+    checkedCategories=[]
+    for cat in categories:
+        # return request.forms.get(cat[1])
+        if request.forms.get(cat[1]):
+            
+            c=[cat[0], cat[1]]
+            checkedCategories.append(c)
+
+    totalSum=[0 for c in categories]
+    minDate=request.forms.minDate
+    maxDate=request.forms.maxDate
+    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
+
+    for cat in checkedCategories:
+        for t in transactions:
+            if t[2]==cat[0]:
+                totalSum[cat[0]-1]+=abs(t[3])
+
+    totalAverage=[0 for c in categories]
+    for i in range(len(totalAverage)):
+        totalAverage[i]=totalSum[i]/sum(totalSum)
+
+    # spremanje u datoteku
+    f= open("budget_report.txt","w+")
+    for i in range(10):
+        f.write("This is line %d\r\n" % (i+1))
+    f.close()
+
+    return uiTrans.overviewReport(categories, minDate, maxDate)
 
 @post('/overview/show')
 def show_overview():
@@ -270,3 +306,4 @@ def sortOptions(option):
         options[1] = True
         options[2] = True
     return options
+
