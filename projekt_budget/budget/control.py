@@ -215,8 +215,7 @@ def transaction_action():
         return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option, filtered=filtered, sort=sort)
 
 @route('/overview')
-def overview_options():
-        
+def overview_options():  
     categories = dbCat.category_select()
     today = datetime.today().strftime('%Y-%m-%d')
     daysInCurrentMonth = calendar.monthrange(int(today[:4]),int(today[5:7]))[1]
@@ -224,11 +223,19 @@ def overview_options():
     lastDayCurrentMonth = datetime.today().replace(day=daysInCurrentMonth).strftime('%Y-%m-%d')    
     return uiTrans.overviewOptions(categories=categories, minD=firstDayCurrentMonth, maxD=lastDayCurrentMonth)
 
+def calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions):
+    for cat in checkedCategories:
+        for t in transactions:
+            if t[2]==cat[0]:
+                totalSum[cat[0]-1]+=abs(t[3])
+
+    for i in range(len(totalAverage)):
+        totalAverage[i]=totalSum[i]/sum(totalSum)
+
+
 @post('/overview/report')
 def overview_report():
-    
     categories = dbCat.category_select()
-    transactions = dbTrans.transaction_select()
     checkedCategories=[]
     for cat in categories:
         if request.forms.get(cat[1]):
@@ -236,19 +243,13 @@ def overview_report():
             checkedCategories.append(c)
             
     totalSum=[0 for c in categories]
+    totalAverage=[0 for c in categories]
+
     minDate=request.forms.minDate
     maxDate=request.forms.maxDate
     transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
 
-    for cat in checkedCategories:
-        for t in transactions:
-            if t[2]==cat[0]:
-                totalSum[cat[0]-1]+=abs(t[3])
-
-    totalAverage=[0 for c in categories]
-    for i in range(len(totalAverage)):
-        totalAverage[i]=totalSum[i]/sum(totalSum)
-
+    calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
 
     txt="------------------------------------------------------------------------\n"
     txt+="From "+minDate + " to "+maxDate+"\n------------------------------------------------------------------------\n\n"
@@ -256,8 +257,8 @@ def overview_report():
         txt+="--- "+ cat[1] + " ---\n"
         for t in transactions:
             if t[2]==cat[0]:
-                txt+=t[1]+"###"+cat[1]+"###"+str(t[3])+"###"+t[4]+"###"+t[5]+"\n"
-        txt+="Category total: "+str(totalSum[cat[0]-1])+"###Percentage: " + '%.2f' % (totalAverage[cat[0]-1]*100)+"%\n"
+                txt+=t[1]+"   "+cat[1]+"   "+str(t[3])+"   "+t[4]+"   "+t[5]+"\n"
+        txt+="Category total: "+str(totalSum[cat[0]-1])+"   Percentage: " + '%.2f' % (totalAverage[cat[0]-1]*100)+"%\n"
         txt+="------------------------------------------------------------------------\n\n"
     
     # spremanje u datoteku
@@ -283,18 +284,12 @@ def show_overview():
 
         
     totalSum=[0 for c in categories]
+    totalAverage=[0 for c in categories]
+    calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
+    
     minDate=request.forms.minDate
     maxDate=request.forms.maxDate
     transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
-
-    for cat in checkedCategories:
-        for t in transactions:
-            if t[2]==cat[0]:
-                totalSum[cat[0]-1]+=abs(t[3])
-                
-    totalAverage=[0 for c in categories]
-    for i in range(len(totalAverage)):
-        totalAverage[i]=totalSum[i]/sum(totalSum)
 
     pieChartData=[]
     for cat in checkedCategories:
