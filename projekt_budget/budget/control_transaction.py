@@ -1,6 +1,6 @@
 from os.path import abspath, join, dirname
 from bottle import route, run, post, request, redirect
-from view import CategoryView, TransactionView
+from view import TransactionView
 
 from model_category import CategoryModelSQLite
 from model_transaction import TransactionModelSQLite
@@ -11,55 +11,10 @@ import calendar
 filename = abspath(join(dirname(__file__), "..", "category.db"))
 
 dbCat=CategoryModelSQLite(filename)
-uiCat=CategoryView()
 
 dbTrans=TransactionModelSQLite(filename)
 uiTrans=TransactionView()
 
-@route('/categories')
-def show_category():
-    categories=dbCat.category_select()
-    return uiCat.categoryShow(categories)
-
-def category_validate(name=None):
-    valid=""
-    if name is not None:
-        cat=dbCat.category_select(name)
-        if cat:
-            valid="Category already exists"
-        elif name.strip()=="":
-            valid="Category must have a name"
-    return valid
-
-
-
-@post('/categories')
-def add_category():
-    name=request.forms.cname
-    action=request.forms.action
-    if action=="add":
-        validation=category_validate(name)
-        categories=dbCat.category_select()
-        if validation:
-            return uiCat.categoryShow(categories=categories, validation=validation, display="block")
-        else:
-            dbCat.category_insert(name)
-            categories=dbCat.category_select()
-            return uiCat.categoryAdd(categories)
-    elif action=="delete":
-        dbCat.category_delete(request.forms.categoryname)
-        categories=dbCat.category_select()
-        return uiCat.categoryAdd(categories)
-    elif action=="edit":
-        editId=dbCat.category_select(request.forms.oldName)[0][0]
-        validationEdit=category_validate(request.forms.nameEdit)
-        if validationEdit:
-            categories=dbCat.category_select()
-            return uiCat.categoryShow(categories=categories, validationEdit=validationEdit, editId=editId)
-        else:
-            dbCat.category_update(request.forms.oldName, request.forms.nameEdit)
-            categories=dbCat.category_select()
-            return uiCat.categoryAdd(categories)
 
 def transaction_validate(name=None, category=None, amount=None, date=None, note=None):
     valid = {}
@@ -213,88 +168,6 @@ def transaction_action():
             else:
                 transactions = dbTrans.transaction_select(amountSort=options[0], dateSort=options[1], descSort=options[2])
         return uiTrans.transactionShow(categories=categories, transactions=transactions, catChecked=checkboxCategories, minA=minAmount, maxA=maxAmount, minD=minDate, maxD=maxDate, option=option, filtered=filtered, sort=sort)
-
-@route('/overview')
-def overview_options():  
-    categories = dbCat.category_select()
-    today = datetime.today().strftime('%Y-%m-%d')
-    daysInCurrentMonth = calendar.monthrange(int(today[:4]),int(today[5:7]))[1]
-    firstDayCurrentMonth = datetime.today().replace(day=1).strftime('%Y-%m-%d')
-    lastDayCurrentMonth = datetime.today().replace(day=daysInCurrentMonth).strftime('%Y-%m-%d')    
-    return uiTrans.overviewOptions(categories=categories, minD=firstDayCurrentMonth, maxD=lastDayCurrentMonth)
-
-def calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions):
-    for cat in checkedCategories:
-        for t in transactions:
-            if t[2]==cat[0]:
-                totalSum[cat[0]-1]+=abs(t[3])
-
-    for i in range(len(totalAverage)):
-        totalAverage[i]=totalSum[i]/sum(totalSum)
-
-
-@post('/overview/report')
-def overview_report():
-    categories = dbCat.category_select()
-    checkedCategories=[]
-    for cat in categories:
-        if request.forms.get(cat[1]):
-            c=[cat[0], cat[1]]
-            checkedCategories.append(c)
-            
-    totalSum=[0 for c in categories]
-    totalAverage=[0 for c in categories]
-
-    minDate=request.forms.minDate
-    maxDate=request.forms.maxDate
-    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
-
-    calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
-
-    txt="------------------------------------------------------------------------\n"
-    txt+="From "+minDate + " to "+maxDate+"\n------------------------------------------------------------------------\n\n"
-    for cat in checkedCategories:
-        txt+="--- "+ cat[1] + " ---\n"
-        for t in transactions:
-            if t[2]==cat[0]:
-                txt+=t[1]+"   "+cat[1]+"   "+str(t[3])+"   "+t[4]+"   "+t[5]+"\n"
-        txt+="Category total: "+str(totalSum[cat[0]-1])+"   Percentage: " + '%.2f' % (totalAverage[cat[0]-1]*100)+"%\n"
-        txt+="------------------------------------------------------------------------\n\n"
-    
-    # spremanje u datoteku
-    fileName="budget_report.txt"
-    f= open(fileName,"w+")
-    f.write(txt)
-    f.close()
-
-    return uiTrans.overviewReport(categories=categories, minD=minDate, maxD=maxDate, checkedCategories=checkedCategories, fileName=fileName)
-
-@post('/overview/show')
-def show_overview():
-    categories = dbCat.category_select()
-    transactions = dbTrans.transaction_select()
-    checkedCategories=[]
-    for cat in categories:
-        if request.forms.get(cat[1]):
-            c=[cat[0], cat[1]]
-            checkedCategories.append(c)
-            
-    if checkedCategories==[]:
-        return uiTrans.overviewShow(categories=categories, transactions=transactions)
-
-        
-    totalSum=[0 for c in categories]
-    totalAverage=[0 for c in categories]
-    calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
-    
-    minDate=request.forms.minDate
-    maxDate=request.forms.maxDate
-    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
-
-    pieChartData=[]
-    for cat in checkedCategories:
-        pieChartData.append([cat[0], float('%0.2f' % (totalAverage[cat[0]-1]*100))])
-    return uiTrans.overviewShow(categories=categories, transactions=transactions, checkedCategories=checkedCategories, totalSum=totalSum, totalAverage=totalAverage, pieChartData=pieChartData)
 
 
 def sortOptions(option):

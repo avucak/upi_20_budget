@@ -1,9 +1,5 @@
 from bottle import Bottle, run, template, route
-import control
-# import os, sys
-
-# dirname = os.path.dirname(sys.argv[0])
-
+import control_category, control_transaction, control_overview
 
 @route('/')
 def index():

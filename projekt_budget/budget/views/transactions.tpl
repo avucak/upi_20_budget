@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #fffdd0;
-  width: 310px;
+  width: 340px;
   padding: 50px;
   margin: 0 auto;
 }
@@ -24,6 +24,27 @@
   border-color: #322a4f;
   font-family: "Times New Roman", Times, serif;
 }
+
+.buttonSmaller {
+  background-color: #69359c; /* Purple */
+  width: 50;
+  height: 25;
+  border: none;
+  color: white;
+  padding: 2px 2px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border: 1px solid black;
+  border-color: #322a4f;
+  font-family: "Times New Roman", Times, serif;
+}
+
+td {
+  text-align: center;
+}
+
 form{ display: inline-block; }
 .inputClass {
 margin: 5px;
@@ -50,7 +71,6 @@ function hideDiv(id){
 
 function checkboxAndSelect(){
   if ({{sum(categoriesChecked)}}>0){
-	  document.getElementById("divFilter").style.display="block";
 	  var i;
     for (i = 0; i < {{categoriesChecked}}.length; i++) {
 		  if ({{categoriesChecked}}[i]==1) { document.getElementById(i).checked=true;}
@@ -80,6 +100,7 @@ function checkboxAndSelect(){
          <option value="newest" id="newest">Newest transaction first</option>
        </select>
        <div id="divFilter" style="display: none;">
+	   <br>
            <label><input type="checkbox" name="checkboxAll" id="0" value="all">All</label>
            % for cat in categories:
              <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}">{{cat[1]}}</label>
@@ -101,22 +122,37 @@ function checkboxAndSelect(){
 	<h2> Transactions </h2>
 	<hr>
     <div class="panel panel-default">
-      % for trans in transactions:
-        <div class="panel-body" id="trans{{trans[0]}}">{{trans[1]}}  {{trans[3]}}  {{trans[4]}}
-          <form action="/transactions/edit/{{trans[0]}}" method="get">
-            <input type="submit" class="button" style="width:50; height:25;" value="Edit">
-          </form>
-          <input type="button" class="button" style="width:50; height:25;" value="Delete" onclick='showDiv("div{{trans[0]}}Delete")'>
-          <div style="display:none" id="div{{trans[0]}}Delete"> Are you sure you want to delete transaction {{trans[1]}}?
-            <form method="post" >
-              <input type="hidden" name="action" value="delete">
-              <input type="hidden" name="transactionId" value="{{trans[0]}}">
-              <input type="submit" class="button" style="width:50; height:25;"  value="Yes">
+      <table>
+         <tr>
+           <th>Name</th>
+           <th>Amount</th>
+           <th>Date</th>
+         </tr>
+       % for trans in transactions:
+       <tr>
+          <div class="panel-body" id="trans{{trans[0]}}">
+           <td>{{trans[1]}}</td> <td>{{trans[3]}}</td>  <td style="width:80px">{{trans[4]}}</td>
+
+             <form action="/transactions/edit/{{trans[0]}}"  style="margin:5 !important" method="get">
+                <td><input type="submit" class="buttonSmaller" value="Edit"></td>
+              </form>
+              <td><input type="button" class="buttonSmaller" value="Delete" onclick='showDiv("div{{trans[0]}}Delete")'></td>
+         </div>
+      </tr>
+      <tr>
+      <td colspan="5">
+        <div style="display:none" id="div{{trans[0]}}Delete"> Are you sure you want to delete transaction {{trans[1]}}?
+          <form method="post" >
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="transactionId" value="{{trans[0]}}">
+            <input type="submit" class="button" style="width:50; height:25;"  value="Yes">
             </form>
-            <input type="button" class="button" style="width:50; height:25;" value="No" onclick="hideDiv('div{{trans[0]}}Delete')">
-          </div>
-        </div>
+          <input type="button" class="buttonSmaller" value="No" onclick="hideDiv('div{{trans[0]}}Delete')">
+       </div>
+     </td>
+   </tr>
       % end
+      </table>
     </div>
   </div>
 </body>

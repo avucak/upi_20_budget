@@ -8,6 +8,7 @@
   padding: 50px;
   margin: 0 auto;
 }
+
 .button {
   background-color: #69359c;
   width: 100;
@@ -22,7 +23,15 @@
   border: 1px solid black;
   border-color: #322a4f;
 }
-form{ display: inline-block; }
+
+.warning {
+  display: none;
+  color: red;
+}
+
+form { 
+  display: inline-block; 
+}
 </style>
 
 <script>
@@ -49,6 +58,11 @@ function hideDiv(id){
   document.getElementById(id).style.display="none";
 }
 
+function closeDelete(id){
+  hideDiv("div"+id);
+  hideDiv("warning"+id); 
+}
+
 function showEdit(id){
   if("{{editId}}"===id)
   {
@@ -57,17 +71,26 @@ function showEdit(id){
   }
 }
 
-function showEdits(){
+function showWarning(id){
+   if("{{deleteWarning}}" == id){
+    document.getElementById("warning"+id).style.display="block";
+    document.getElementById("div"+id).style.display="block";
+  }
+}
+
+function showEditsAndWarning(){
   var categories="{{data}}";
   for (index = 0; index < categories.length; index++) {
     showEdit(categories[index][0]);
+    showWarning(categories[index][0]);
   }
 }
+
 
 </script>
 
 <html>
-<body onload="showEdits()">
+<body onload="showEditsAndWarning()">
 <div class="divFrame">
 <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form> 
 <input type="button" class="button" name="addCategory" value="Add category" onclick="showAdd()">
@@ -99,7 +122,8 @@ function showEdits(){
       <input type="hidden" name="action" value="delete">
       <input type="hidden" name="categoryname" value="{{cat[1]}}">
       <input type="submit" class="button" style="width:50; height:25;"  value="Yes"> </form>
-      <input type="button" class="button" style="width:50; height:25;" value="No" onclick="hideDiv('div{{cat[0]}}')">
+      <input type="button" class="button" style="width:50; height:25;" value="No" onclick="closeDelete('{{cat[0]}}')">
+      <p class="warning" id="warning{{cat[0]}}">There are transactions with this category, can't be deleted.</p>
     </div>
   </div>
   % end

@@ -32,10 +32,10 @@ function categoryWarning()
 {
     if({{disable}}==false){
 	document.getElementById("categoryWarning").style.display="none";
-	}
+    }
     else {
 	document.getElementById("addTransaction").disabled=true;
-	}
+    }
 		
 }
 

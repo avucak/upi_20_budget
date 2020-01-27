@@ -3,12 +3,12 @@ from bottle import template
 class CategoryView():
 
     @staticmethod
-    def categoryShow(categories=[], validation="", validationEdit="", editId="", display="none"):
-        return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display)
+    def categoryShow(categories=[], validation="", validationEdit="", editId="", display="none", deleteWarning=""):
+        return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display, deleteWarning=deleteWarning)
 
-    @staticmethod
-    def categoryAdd(categories=[], validation="", validationEdit="", editId="", display="none"):
-        return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display)
+   # @staticmethod
+   # def categoryAdd(categories=[], validation="", validationEdit="", editId="", display="none"):
+   #    return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display)
 
 class TransactionView():
 
@@ -35,7 +35,6 @@ class TransactionView():
     @staticmethod
     def overviewReport(categories=[], minD="", maxD="", checkedCategories=[], fileName=""):
         return template('overview_report', categories=categories, minDate=minD, maxDate=maxD, checkedCategories=checkedCategories, fileName=fileName)
-
 
     @staticmethod
     def overviewShow(categories=[], transactions=[], checkedCategories=[], totalSum=[], totalAverage=[], pieChartData=[]):
