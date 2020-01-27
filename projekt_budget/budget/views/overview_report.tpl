@@ -71,8 +71,21 @@ function checkBoxChecking(){
 			document.getElementById({{cat[0]}}).checked=true;
 		% end
 		}
+}
 	
-	
+
+
+function checkBoxFill(){
+
+	% for cat in categories:
+		% if cat in checkedCategories:
+		console.log({{cat[0]}});
+			document.getElementById("{{cat[0]}}").checked=true;
+		% else:
+			document.getElementById("{{cat[0]}}").checked=false;
+			document.getElementById("0").checked=false;
+		% end
+	% end	
 
 }
 </script>
@@ -98,5 +111,6 @@ function checkBoxChecking(){
       <form action=".." method="get">
         <input type="submit" class="button" value="Discard">
       </form>
+	  <p style="color: red"> File {{fileName}} was succesfully created! </p>
   </div>
 </body>
