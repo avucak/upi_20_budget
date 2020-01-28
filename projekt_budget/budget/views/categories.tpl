@@ -3,7 +3,7 @@
   resize: both;
   overflow: auto;
   text-align: center;
-  background-color: #fffdd0;
+  background-color: #F2F7FB;
   width: 310px;
   padding: 50px;
   margin: 0 auto;
@@ -31,6 +31,11 @@
 
 form { 
   display: inline-block; 
+}
+
+body {
+  background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
+  background-size: 100% 100%;
 }
 </style>
 
@@ -107,8 +112,15 @@ function showEditsAndWarning(){
 <div class="panel panel-default">
   % for cat in data:
   <br>
-  <div class="panel-body" >{{cat[1]}} <input type="button" class="button" style="width:50; height:25;" value="Edit" onclick='showDiv("div{{cat[0]}}Edit")'>
-    <input type="button" class="button" style="width:50; height:25;" value="Delete" onclick='showDiv("div{{cat[0]}}")'>
+  <div class="panel-body">
+  <table align="center">
+	<tr>
+		<td style="width:100px"> <p>{{cat[1]}}</p> </td>
+		<td> <input type="button" class="button" style="width:50; height:25;" value="Edit" onclick='showDiv("div{{cat[0]}}Edit")'> </td>
+		<td> <input type="button" class="button" style="width:50; height:25;" value="Delete" onclick='showDiv("div{{cat[0]}}")'> </td>
+	</tr>
+  </table>
+  
     <form method="post" >
     <input type="hidden" name="action" value="edit">
     <input type="hidden" name="oldName" value="{{cat[1]}}">

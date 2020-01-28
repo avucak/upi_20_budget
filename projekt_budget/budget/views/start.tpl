@@ -26,7 +26,7 @@
 
 body {
   background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
-  background-size: 100%;
+  background-size: 100% 100%;
 }
 </style>
 

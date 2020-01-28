@@ -1,9 +1,11 @@
+<html>
+
 <style>
 .divFrame{
   resize: both;
   overflow: auto;
   text-align: center;
-  background-color: #fffdd0;
+  background-color: #F2F7FB;
   width: 340px;
   padding: 50px;
   margin: 0 auto;
@@ -43,11 +45,18 @@
 
 td {
   text-align: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 form{ display: inline-block; }
 .inputClass {
 margin: 5px;
+}
+
+body {
+  background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
+  background-size: 100% 100%;
 }
 </style>
 
@@ -131,11 +140,13 @@ function checkboxAndSelect(){
        % for trans in transactions:
        <tr>
           <div class="panel-body" id="trans{{trans[0]}}">
-           <td>{{trans[1]}}</td> <td>{{trans[3]}}</td>  <td style="width:80px">{{trans[4]}}</td>
+           <td><a href="/transactions/{{trans[0]}}" style="color:#69359c;">{{trans[1]}}</a></td> 
+		   <td>{{trans[3]}} </td>  
+		   <td style="width:80px">{{trans[4]}}</td>
 
              <form action="/transactions/edit/{{trans[0]}}"  style="margin:5 !important" method="get">
-                <td><input type="submit" class="buttonSmaller" value="Edit"></td>
-              </form>
+                <td><input type="submit" class="buttonSmaller" value="Edit"></form></td>
+
               <td><input type="button" class="buttonSmaller" value="Delete" onclick='showDiv("div{{trans[0]}}Delete")'></td>
          </div>
       </tr>
@@ -156,3 +167,5 @@ function checkboxAndSelect(){
     </div>
   </div>
 </body>
+
+</html>

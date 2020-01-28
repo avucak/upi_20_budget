@@ -52,6 +52,15 @@ def show_transactions():
     transactions = dbTrans.transaction_select(amountSort=options[0], dateSort=options[1], descSort=options[2])
     return uiTrans.transactionShow(categories=categories, transactions=transactions, option=option)
 
+@route('/transactions/<transId>')
+def showTransactionDetails(transId):
+    transactions = dbTrans.transaction_select(transactionId=transId)
+    categories = dbCat.category_select()
+    for cat in categories:
+        if cat[0]==transactions[0][2]:
+            category=cat[1]
+        
+    return uiTrans.transactionDetails(transactions[0], category)
 
 @route('/transactions/add')
 def show_add_transaction():

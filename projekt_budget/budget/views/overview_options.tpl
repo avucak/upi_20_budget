@@ -1,18 +1,15 @@
 <style>
-div2 {
-  resize: both;
-  overflow: auto;
-  background-color: #8b72be;
-  padding: 50 px;
-}
 .divFrame{
   resize: both;
   overflow: auto;
   text-align: center;
-  background-color: #fffdd0;
+  background-color: #F2F7FB;
   width: 310px;
   padding: 50px;
   margin: 0 auto;
+}
+.divCheckbox {
+	display: inline-block;
 }
 
 .button {
@@ -30,8 +27,14 @@ div2 {
   border-color: #322a4f;
 }
 form{ display: inline-block; }
+
 .inputClass {
 margin: 5px;
+}
+
+body {
+  background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
+  background-size: 100% 100%;
 }
 </style>
 
@@ -88,7 +91,7 @@ function checkBoxChecking(){
         <p>Categories included</p>
         <label><input type="checkbox" name="checkboxAll" id="0" value="all" checked onclick="checkBoxCheckAll()">All</label>
         % for cat in categories:
-          <label><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}" checked onclick="checkBoxChecking()">{{cat[1]}}</label>
+          <div class="divCheckbox"><input type="checkbox" name="{{cat[1]}}" id="{{cat[0]}}" value="{{cat[0]}}" checked onclick="checkBoxChecking()">{{cat[1]}}</div>
         % end
 		<br><br>
         <input type="submit" class="button"  style="display:inline-block;margin:0" value="Show transactions" >

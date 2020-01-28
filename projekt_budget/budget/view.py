@@ -17,6 +17,10 @@ class TransactionView():
         return template('transactions', categories=categories, transactions=transactions, categoriesChecked=catChecked, minAmount=minA, maxAmount=maxA, minDate=minD, maxDate=maxD, option=option, filtered=filtered, sort=sort)
 
     @staticmethod
+    def transactionDetails(transaction=[], category=""):
+        return template('transaction_details', transaction=transaction, category=category)
+
+    @staticmethod
     def transactionAdd(categories=[], disable="false"):
         return template("add_transaction", categories=categories, disable=disable)
 

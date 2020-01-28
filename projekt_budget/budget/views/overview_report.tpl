@@ -1,15 +1,9 @@
 <style>
-div2 {
-  resize: both;
-  overflow: auto;
-  background-color: #8b72be;
-  padding: 50 px;
-}
 .divFrame{
   resize: both;
   overflow: auto;
   text-align: center;
-  background-color: #fffdd0;
+  background-color: #F2F7FB;
   width: 310px;
   padding: 50px;
   margin: 0 auto;
@@ -30,8 +24,14 @@ div2 {
   border-color: #322a4f;
 }
 form{ display: inline-block; }
+
 .inputClass {
 margin: 5px;
+}
+
+body {
+  background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
+  background-size: 100% 100%;
 }
 </style>
 
