@@ -45,12 +45,14 @@ p {
 		<form action="/transactions" method="get"> <input type="submit" class="button" name="go_back" value="Back">
 		</form>
 		<div name="details">
+		<hr>
 		<h2> {{transaction[1]}} </h2>
+		<hr>
 		<b>Category:</b> <p>{{category}}</p> 
 		<br><br>
-		<b>Date:</b> <p>{{transaction[3]}}</p>
+		<b>Amount:</b> <p>{{transaction[3]}}</p>
 		<br><br>
-		<b>Amount:</b> <p>{{transaction[4]}}</p>
+		<b>Date:</b> <p>{{transaction[4]}}</p>
 		<br><br>
 		<b> Note: </b> 
 		<br>
