@@ -11,6 +11,7 @@ class IntegrityError(Exception):
     pass
 
 
+
 class TransactionModelSQLite:
 
     def __init__(self, filename):
