@@ -62,15 +62,7 @@ class TestCategoryModel(unittest.TestCase):
         with self.assertRaises(model_category.IntegrityError):
             self.db.category_delete("Food")
         self.assertCountEqual(self.db.category_select(), [(1,"Bills"), (2, "Rent")])
-
-    def test_category_empty_insert(self):
-        self.db.category_insert("Bills")
-        with self.assertRaises(model_category.IntegrityError):
-            self.db.category_delete("   ")
-        self.db.category_insert("Rent")
-        self.assertCountEqual(self.db.category_select(), [(1,"Bills"), (2, "Rent")])
         
-    
 
 if __name__ == "__main__":
     unittest.main()

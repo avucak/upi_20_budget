@@ -6,6 +6,7 @@ if __name__ == "__main__":
 import unittest, model_category, model_transaction, sqlite3
 
 class TestTransactionModel(unittest.TestCase):
+    
     def setUp(self):
         self.dbTrans = model_transaction.TransactionModelSQLite("unit_database.db")
         self.dbCat = model_category.CategoryModelSQLite("unit_database.db")
@@ -77,6 +78,7 @@ class TestTransactionModel(unittest.TestCase):
             
         self.assertCountEqual(self.dbTrans.transaction_select(), [(1, "Dinner",3, 79.99, "2019-12-10", "moja napomena"),
                                                                   (2, "Electricity bill",1, 79.99, "2019-12-30", "December")])
+
         
     def test_transaction_3_inserts_1_delete(self):
         self.insert_categories()
@@ -127,6 +129,20 @@ class TestTransactionModel(unittest.TestCase):
                                                                   (2, "Dinner", 3, 35.45, "2019-12-10", ""),
                                                                   (3, "Rent", 2, 150, "2019-12-01", "Rent for November")])
 
+    def test_transaction_3_inserts_1_wrong_update_category(self):
+
+        self.insert_categories()
+        
+        self.dbTrans.transaction_insert("Water bill", 1, 79.99, "2019-12-10", "November")
+        self.dbTrans.transaction_insert("Dinner", 3, 35.45, "2019-12-10")
+        self.dbTrans.transaction_insert("Rent", 2, 150, "2019-12-01", "Rent for November")
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.dbTrans.transaction_update(2, "Dinner", 5, 35.45, "2019-12-10")
+
+        self.assertCountEqual(self.dbTrans.transaction_select(), [(1, "Water bill", 1, 79.99, "2019-12-10", "November"),
+                                                                  (2, "Dinner", 3, 35.45, "2019-12-10", ""),
+                                                                  (3, "Rent", 2, 150, "2019-12-01", "Rent for November")])
+
     def test_transaction_insert_wrong_amount(self):
         self.insert_categories()
         
@@ -135,10 +151,7 @@ class TestTransactionModel(unittest.TestCase):
             self.dbTrans.transaction_insert( "Lunch", 3, "abc", "2019-12-10")
 
         self.assertCountEqual(self.dbTrans.transaction_select(), [(1, "Water bill", 1, 79.99, "2019-12-10", "November")])
-
-         
-        
-        
+ 
         
 if __name__ == "__main__":
     unittest.main()
