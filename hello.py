@@ -1,1 +1,0 @@
-print("Hello Uvod u programsko inženjerstvo!")

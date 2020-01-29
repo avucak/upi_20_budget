@@ -3,7 +3,7 @@
   resize: both;
   overflow: auto;
   text-align: center;
-  background-color: #fffdd0;
+  background-color: #F2F7FB;
   width: 310px;
   padding: 50px;
 }
@@ -25,6 +25,11 @@
 margin: 5px;
 }
 form{ display: inline-block; }
+
+body {
+  background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
+  background-size: 100% 100%;
+}
 </style>
 
 <script>
@@ -45,7 +50,7 @@ function selectCategory()
   <body onload="selectCategory()">
     <center>
     <div class="divFrame">
-      <form method="post">
+      <form method="post" action="/transactions/edit/{{trans_id}}">
         Transaction name: <input type="text" name="transactionName" value="{{name}}">
         <br>
         Category: <select name="transactionCategory" class="inputClass">

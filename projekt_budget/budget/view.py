@@ -3,18 +3,19 @@ from bottle import template
 class CategoryView():
 
     @staticmethod
-    def categoryShow(categories=[], validation="", validationEdit="", editId="", display="none"):
-        return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display)
+    def categoryShow(categories=[], validation="", validationEdit="", editId="", display="none", deleteWarning=""):
+        return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display, deleteWarning=deleteWarning)
 
-    @staticmethod
-    def categoryAdd(categories=[], validation="", validationEdit="", editId="", display="none"):
-        return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display)
 
 class TransactionView():
 
     @staticmethod
     def transactionShow(categories=[], transactions=[], catChecked=[], minA="", maxA="", minD="", maxD="", option="other", filtered=False, sort=False):
         return template('transactions', categories=categories, transactions=transactions, categoriesChecked=catChecked, minAmount=minA, maxAmount=maxA, minDate=minD, maxDate=maxD, option=option, filtered=filtered, sort=sort)
+
+    @staticmethod
+    def transactionDetails(transaction=[], category=""):
+        return template('transaction_details', transaction=transaction, category=category)
 
     @staticmethod
     def transactionAdd(categories=[], disable="false"):
@@ -35,7 +36,6 @@ class TransactionView():
     @staticmethod
     def overviewReport(categories=[], minD="", maxD="", checkedCategories=[], fileName=""):
         return template('overview_report', categories=categories, minDate=minD, maxDate=maxD, checkedCategories=checkedCategories, fileName=fileName)
-
 
     @staticmethod
     def overviewShow(categories=[], transactions=[], checkedCategories=[], totalSum=[], totalAverage=[], pieChartData=[]):
