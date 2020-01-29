@@ -7,6 +7,7 @@
   width: 310px;
   padding: 50px;
 }
+
 .button {
   background-color: #69359c; 
   width: 100;
@@ -22,9 +23,15 @@
 }
 
 .inputClass {
-margin: 5px;
+  margin: 5px;
 }
-form{ display: inline-block; }
+
+form { display: inline-block; }
+
+.warning {
+  display: none;
+  color: red;
+}
 
 body {
   background-image: url("https://images.unsplash.com/photo-1496167117681-944f702be1f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80");
@@ -51,7 +58,7 @@ function categoryWarning()
   <body onload="categoryWarning()">
     <center>
     <div class="divFrame">
-      <form method="post">
+      <form action="/transactions/add" method="post">
         Transaction name: <input type="text" name="transactionName">
         <br>
         Category: <select name="transactionCategory" class="inputClass" >
@@ -67,7 +74,7 @@ function categoryWarning()
         Note: <br><textarea cols="30" rows="5" class="inputClass"  type="text" name="transactionNote"></textarea>
         <br><br>
         <input type="submit" class="button" name="addTransaction" id="addTransaction" value="Add">
-	<p style="color:red" id="categoryWarning">There must be at least one category to add a transaction </p>
+	<p class="warning" id="categoryWarning">There must be at least one category to add a transaction </p>
       </form>
       <form action="/transactions" method="get"><input type="submit" class="button" name="discardTransaction" value="Discard"></form>
     </div>

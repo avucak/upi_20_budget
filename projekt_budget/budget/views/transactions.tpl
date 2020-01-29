@@ -118,7 +118,7 @@ function checkboxAndSelect(){
            <br> Max: <input type="number" class="inputClass"  name="maxAmount" step="0.01" value={{maxAmount}}>
            <br> Start date: <input type="date" class="inputClass" name="minDate" value={{minDate}}>
            <br> End date: <input type="date" class="inputClass" name="maxDate" value={{maxDate}}>
-           <input type="submit" class="button" name="actionButton" style="display:inline-block;margin:0" value="Apply" >
+           <br> <input type="submit" class="button" name="actionButton" style="display:inline-block;margin:0" value="Apply" >
      </form>
        <form action="/transactions" method="get">
          <input type="hidden" name="optionSort" value="{{option}}">
@@ -145,23 +145,23 @@ function checkboxAndSelect(){
 		   <td style="width:80px">{{trans[4]}}</td>
 
              <form action="/transactions/edit/{{trans[0]}}"  style="margin:5 !important" method="get">
-                <td><input type="submit" class="buttonSmaller" value="Edit"></form></td>
-
+                <td><input type="submit" class="buttonSmaller" value="Edit"></td>
+             </form>
               <td><input type="button" class="buttonSmaller" value="Delete" onclick='showDiv("div{{trans[0]}}Delete")'></td>
          </div>
       </tr>
       <tr>
       <td colspan="5">
         <div style="display:none" id="div{{trans[0]}}Delete"> Are you sure you want to delete transaction {{trans[1]}}?
-          <form method="post" >
-            <input type="hidden" name="action" value="delete">
-            <input type="hidden" name="transactionId" value="{{trans[0]}}">
-            <input type="submit" class="button" style="width:50; height:25;"  value="Yes">
-            </form>
-          <input type="button" class="buttonSmaller" value="No" onclick="hideDiv('div{{trans[0]}}Delete')">
-       </div>
-     </td>
-   </tr>
+          <form action="/transactions" method="post" >
+             <input type="hidden" name="action" value="delete">
+             <input type="hidden" name="transactionId" value="{{trans[0]}}">
+             <input type="submit" class="button" style="width:50; height:25;"  value="Yes">
+           </form>
+           <input type="button" class="buttonSmaller" value="No" onclick="hideDiv('div{{trans[0]}}Delete')">
+         </div>
+        </td>
+      </tr>
       % end
       </table>
     </div>

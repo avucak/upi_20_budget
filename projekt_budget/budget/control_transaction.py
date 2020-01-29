@@ -84,9 +84,7 @@ def add_transaction():
     else:
         categoryId = dbCat.category_select(category)[0][0]
         dbTrans.transaction_insert(name,categoryId,amount,date,note)
-        transactions = dbTrans.transaction_select()
-        categories = dbCat.category_select()
-        return uiTrans.transactionShow(categories=categories, transactions=transactions)
+        redirect("/transactions")
 
 @route('/transactions/edit/<transactionId>')
 def show_edit_transaction(transactionId):
@@ -98,7 +96,7 @@ def show_edit_transaction(transactionId):
     note = transaction[5]
 
     categories = dbCat.category_select()
-    return uiTrans.transactionEdit(categories=categories,validation={},name=name,category=category,amount=amount,date=date,note=note)
+    return uiTrans.transactionEdit(categories=categories,validation={}, trans_id=transactionId, name=name,category=category,amount=amount,date=date,note=note)
 
 @post('/transactions/edit/<transactionId>')
 def edit_transaction(transactionId):
@@ -115,20 +113,17 @@ def edit_transaction(transactionId):
     else:
         categoryId = dbCat.category_select(category)[0][0]
         dbTrans.transaction_update(transactionId,name,categoryId,amount,date,note)
-        transactions = dbTrans.transaction_select()
-        categories = dbCat.category_select()
-        return uiTrans.transactionShow(categories=categories, transactions=transactions)
+        redirect("/transactions")
 
 @post('/transactions')
 def transaction_action():
-    categories = dbCat.category_select()
     action = request.forms.action
     if action == "delete":
         dbTrans.transaction_delete(request.forms.transactionId)
-        transactions = dbTrans.transaction_select()
-        return uiTrans.transactionShow(categories=categories, transactions=transactions)
+        redirect("/transactions")
 
     if action == "sortFilter":
+        categories = dbCat.category_select()
         buttonClicked = request.forms.actionButton
         previouslyFiltered = request.forms.filtered == "True"
         previouslySorted = request.forms.sorted == "True"

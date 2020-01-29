@@ -3,7 +3,7 @@ From 2020-01-01 to 2020-01-31
 ------------------------------------------------------------------------
 
 --- Food ---
-Lunch   Food   -30.55   2020-01-08   WokMe wok dana
+Lunch   Food   30.55   2020-01-08   WokMe wok dana
 Category total: 30.55   Percentage: 18.37%
 ------------------------------------------------------------------------
 
@@ -12,12 +12,12 @@ Category total: 0   Percentage: 0.00%
 ------------------------------------------------------------------------
 
 --- Bills ---
-Netflix   Bills   -60.72   2020-01-01   Monthly subsription
+Netflix   Bills   60.72   2020-01-01   Monthly subsription
 Category total: 60.72   Percentage: 36.52%
 ------------------------------------------------------------------------
 
 --- Entertainment ---
-Parasite   Entertainment   75.0   2020-01-11   Movie ticket + nachos + drink
+Cinema   Entertainment   75.0   2020-01-11   Movie ticket + nachos + drink
 Category total: 75.0   Percentage: 45.11%
 ------------------------------------------------------------------------
 

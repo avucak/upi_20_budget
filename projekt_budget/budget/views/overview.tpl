@@ -51,7 +51,7 @@ chartData[i][1]=chartData[i][1];
 }
 chartData=[["Category", "Percentage"]].concat(chartData)
 var data = google.visualization.arrayToDataTable(chartData);
-var options = {'title':'Budget breakdown', 'width':280, 'height':300, backgroundColor: 'transparent', 'legend':'top', chartArea:{top:40,width:"100%",height:"100%"}};
+var options = {'title':'Budget breakdown', 'width':280, 'height':300, backgroundColor: 'transparent', legend: 'top', chartArea:{top:40,width:"100%",height:"100%"}};
 
 
 var chart = new google.visualization.PieChart(document.getElementById('piechart'));

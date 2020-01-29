@@ -6,9 +6,6 @@ class CategoryView():
     def categoryShow(categories=[], validation="", validationEdit="", editId="", display="none", deleteWarning=""):
         return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display, deleteWarning=deleteWarning)
 
-   # @staticmethod
-   # def categoryAdd(categories=[], validation="", validationEdit="", editId="", display="none"):
-   #    return template('categories', data=categories, validation=validation, validationEdit=validationEdit, editId=editId, disp=display)
 
 class TransactionView():
 

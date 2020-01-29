@@ -50,7 +50,7 @@ function selectCategory()
   <body onload="selectCategory()">
     <center>
     <div class="divFrame">
-      <form method="post">
+      <form method="post" action="/transactions/edit/{{trans_id}}">
         Transaction name: <input type="text" name="transactionName" value="{{name}}">
         <br>
         Category: <select name="transactionCategory" class="inputClass">

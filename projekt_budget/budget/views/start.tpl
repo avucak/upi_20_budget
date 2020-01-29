@@ -8,7 +8,7 @@
   padding: 50px;
 }
 .button {
-  background-color: #b867e0;
+  background-color: #69359c; /* Purple */
   width: 100;
   height: 40;
   border: none;
@@ -36,15 +36,15 @@ body {
     <center>
       <div class="divFrame">
         <h1 class="title"> budget.IO </h1>
-        <form action="transactions" method="get">
+        <form action="/transactions" method="get">
           <input type="submit" class="button" name="transaction" value="Transactions">
         </form>
 
-       <form action="categories" method="get">
+       <form action="/categories" method="get">
          <input type="submit" class="button" name="category" value="Categories">
        </form>
 
-      <form action="overview" method="get">
+      <form action="/overview" method="get">
         <input type="submit" class="button" name="overview" value="Overview">
       </form>
     </div>
