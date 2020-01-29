@@ -86,8 +86,8 @@ function checkBoxChecking(){
   <div class="divFrame">
       <form action="/overview/show" method="post">
 	<h2>Overview options</h2>
-        <br> Start date: <input type="date" class="inputClass" name="minDate" value={{minDate}}>
-        <br> End date: <input type="date" class="inputClass" name="maxDate" value={{maxDate}}>
+        <br> Start date: <input type="date" class="inputClass" name="minDate" value="{{minDate}}">
+        <br> End date: <input type="date" class="inputClass" name="maxDate" value="{{maxDate}}">
         <p>Categories included</p>
         <label><input type="checkbox" name="checkboxAll" id="0" value="all" checked onclick="checkBoxCheckAll()">All</label>
         % for cat in categories:

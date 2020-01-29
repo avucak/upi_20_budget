@@ -22,7 +22,7 @@ class TransactionModelSQLite:
             CREATE TABLE IF NOT EXISTS transactions(
               id integer PRIMARY KEY,
               name text NOT NULL,
-              category integer,
+              category integer NOT NULL,
               amount real NOT NULL,
               date Date NOT NULL,
               note string,

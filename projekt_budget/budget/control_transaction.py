@@ -96,7 +96,7 @@ def show_edit_transaction(transactionId):
     note = transaction[5]
 
     categories = dbCat.category_select()
-    return uiTrans.transactionEdit(categories=categories,validation={}, trans_id=transactionId, name=name,category=category,amount=amount,date=date,note=note)
+    return uiTrans.transactionEdit(categories=categories,validation={}, transId=transactionId, name=name,category=category,amount=amount,date=date,note=note)
 
 @post('/transactions/edit/<transactionId>')
 def edit_transaction(transactionId):

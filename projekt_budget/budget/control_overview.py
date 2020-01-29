@@ -32,7 +32,8 @@ def calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
                 totalSum[cat[0]-1]+=abs(t[3])
 
     for i in range(len(totalAverage)):
-        totalAverage[i]=totalSum[i]/sum(totalSum)
+        if sum(totalSum) != 0:
+            totalAverage[i]=totalSum[i]/sum(totalSum)
 
 
 @post('/overview/report')
@@ -43,14 +44,15 @@ def overview_report():
         if request.forms.get(cat[1]):
             c=[cat[0], cat[1]]
             checkedCategories.append(c)
+    minDate, maxDate = None, None
+    if request.forms.minDate:
+        minDate=request.forms.minDate
+    if request.forms.maxDate:
+        maxDate=request.forms.maxDate
+    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
             
     totalSum=[0 for c in categories]
     totalAverage=[0 for c in categories]
-
-    minDate=request.forms.minDate
-    maxDate=request.forms.maxDate
-    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
-
     calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
 
     txt="------------------------------------------------------------------------\n"
@@ -84,14 +86,17 @@ def show_overview():
     if checkedCategories==[]:
         return uiTrans.overviewShow(categories=categories, transactions=transactions)
 
-        
+    minDate, maxDate = None, None
+    if request.forms.minDate:
+        minDate=request.forms.minDate
+    if request.forms.maxDate:
+        maxDate=request.forms.maxDate
+    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
+    
     totalSum=[0 for c in categories]
     totalAverage=[0 for c in categories]
     calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions)
     
-    minDate=request.forms.minDate
-    maxDate=request.forms.maxDate
-    transactions = dbTrans.transaction_select(minDate=minDate, maxDate=maxDate)
 
     pieChartData=[]
     for cat in checkedCategories:
