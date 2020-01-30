@@ -1,6 +1,6 @@
 from os.path import abspath, join, dirname
 from bottle import route, run, post, request, redirect
-from view import TransactionView
+from view_transaction import TransactionView
 
 from model_category import CategoryModelSQLite
 from model_transaction import TransactionModelSQLite

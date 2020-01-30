@@ -1,6 +1,6 @@
 from os.path import abspath, join, dirname
 from bottle import route, run, post, request, redirect
-from view import TransactionView
+from view_overview import OverviewView
 
 from model_category import CategoryModelSQLite
 from model_transaction import TransactionModelSQLite
@@ -13,7 +13,7 @@ filename = abspath(join(dirname(__file__), "..", "category.db"))
 dbCat=CategoryModelSQLite(filename)
 
 dbTrans=TransactionModelSQLite(filename)
-uiTrans=TransactionView()
+uiOver=OverviewView()
 
 @route('/overview')
 def overview_options():  
@@ -22,7 +22,7 @@ def overview_options():
     daysInCurrentMonth = calendar.monthrange(int(today[:4]),int(today[5:7]))[1]
     firstDayCurrentMonth = datetime.today().replace(day=1).strftime('%Y-%m-%d')
     lastDayCurrentMonth = datetime.today().replace(day=daysInCurrentMonth).strftime('%Y-%m-%d')    
-    return uiTrans.overviewOptions(categories=categories, minD=firstDayCurrentMonth, maxD=lastDayCurrentMonth)
+    return uiOver.overviewOptions(categories=categories, minD=firstDayCurrentMonth, maxD=lastDayCurrentMonth)
 
 
 def calculateSumAverage(totalSum, totalAverage, checkedCategories, transactions):
@@ -71,7 +71,7 @@ def overview_report():
     f.write(txt)
     f.close()
 
-    return uiTrans.overviewReport(categories=categories, minD=minDate, maxD=maxDate, checkedCategories=checkedCategories, fileName=fileName)
+    return uiOver.overviewReport(categories=categories, minD=minDate, maxD=maxDate, checkedCategories=checkedCategories, fileName=fileName)
 
 @post('/overview/show')
 def show_overview():
@@ -84,7 +84,7 @@ def show_overview():
             checkedCategories.append(c)
             
     if checkedCategories==[]:
-        return uiTrans.overviewShow(categories=categories, transactions=transactions)
+        return uiOver.overviewShow(categories=categories, transactions=transactions)
 
     minDate, maxDate = None, None
     if request.forms.minDate:
@@ -101,4 +101,4 @@ def show_overview():
     pieChartData=[]
     for cat in checkedCategories:
         pieChartData.append([cat[0], float('%0.2f' % (totalAverage[cat[0]-1]*100))])
-    return uiTrans.overviewShow(categories=categories, transactions=transactions, checkedCategories=checkedCategories, totalSum=totalSum, totalAverage=totalAverage, pieChartData=pieChartData)
+    return uiOver.overviewShow(categories=categories, transactions=transactions, checkedCategories=checkedCategories, totalSum=totalSum, totalAverage=totalAverage, pieChartData=pieChartData)
