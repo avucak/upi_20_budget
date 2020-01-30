@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 310px;
+  width: 400px;
   padding: 50px;
   margin: 0 auto;
 }
@@ -145,7 +145,8 @@ function showEditsAndWarning(){
 	    <input type="button" class="buttonSmaller" value="Discard" onclick="closeAddEdit('div{{cat[0]}}Edit','nameEdit','valid{{cat[0]}}')">
           </div>
           <div style="display:none" id="div{{cat[0]}}"> Are you sure you want to delete category {{cat[1]}}? 
-            <form action="/categories" method="post" >
+            <br>
+			<form action="/categories" method="post" >
               <input type="hidden" name="action" value="delete">
               <input type="hidden" name="categoryname" value="{{cat[1]}}">
               <input type="submit" class="buttonSmaller"  value="Yes">

@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 310px;
+  width: 400px;
   padding: 50px;
 }
 
@@ -60,7 +60,7 @@ function selectCategory(){
         </select>
 	<p class="warning">{{ validation.get("category", "") }} </p>
         <br>
-        Amount: <input class="inputClass" type="number" name="transactionAmount" value="{{amount}}" step="0.01">
+        Amount: <input class="inputClass" type="number" name="transactionAmount" value="{{amount}}" step="0.01" min="0">
 	<p class="warning">{{ validation.get("amount", "") }} </p>
         <br>
         Date: <input class="inputClass"  type="date" name="transactionDate" id="transactionDate" value="{{date}}">
@@ -74,6 +74,7 @@ function selectCategory(){
 	<input type="submit" class="button" name="editTransaction" value="Save">
 	% end
       </form>
+	  <br>
       <form action="/transactions" method="get">
 	<input type="submit" class="button" name="discardTransaction" value="Discard">
       </form>

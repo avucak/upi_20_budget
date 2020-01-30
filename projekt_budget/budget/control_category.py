@@ -5,7 +5,7 @@ from view_category import CategoryView
 from model_category import CategoryModelSQLite
 from model_transaction import TransactionModelSQLite
 
-filename = abspath(join(dirname(__file__), "..", "category.db"))
+filename = abspath(join(dirname(__file__), "..", "budget.db"))
 
 dbTrans=TransactionModelSQLite(filename)
 dbCat=CategoryModelSQLite(filename)

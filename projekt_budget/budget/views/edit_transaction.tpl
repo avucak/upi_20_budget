@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 310px;
+  width: 400px;
   padding: 50px;
 }
 .button {
@@ -59,7 +59,7 @@ function selectCategory()
         % end
         </select>
         <br>
-        Amount: <input class="inputClass" type="number" name="transactionAmount" step="0.01" value="{{amount}}">
+        Amount: <input class="inputClass" type="number" name="transactionAmount" step="0.01" value="{{amount}}" min="0">
         <br>
         Date: <input class="inputClass"  type="date" name="transactionDate" id="transactionDate" value="{{date}}">
         <br>
@@ -67,6 +67,7 @@ function selectCategory()
         <br><br>
         <input type="submit" class="button" name="addTransaction" value="Save">
       </form>
+	  <br>
       <form action="/transactions" method="get"><input type="submit" class="button" name="discardTransaction" value="Discard"></form>
     </div>
     </center>

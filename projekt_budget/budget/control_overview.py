@@ -8,7 +8,7 @@ from model_transaction import TransactionModelSQLite
 from datetime import datetime
 import calendar
 
-filename = abspath(join(dirname(__file__), "..", "category.db"))
+filename = abspath(join(dirname(__file__), "..", "budget.db"))
 
 dbCat=CategoryModelSQLite(filename)
 

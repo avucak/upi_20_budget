@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 310px;
+  width: 400px;
   padding: 50px;
   margin: 0 auto;
 }
@@ -84,6 +84,7 @@ function checkBoxChecking(){
 
 <body>
   <div class="divFrame">
+  <center>
       <form action="/overview/show" method="post">
 	<h2>Overview options</h2>
         <br> Start date: <input type="date" class="inputClass" name="minDate" value="{{minDate}}">
@@ -97,9 +98,10 @@ function checkBoxChecking(){
         <input type="submit" class="button"  style="display:inline-block;margin:0" value="Show transactions" >
         <input type="submit" class="button" formaction="/overview/report" style="display:inline-block" value="Create report">
 	  </form>
-      
+      <br>
       <form action=".." method="get">
         <input type="submit" class="button" value="Discard">
       </form>
+  </center>
   </div>
 </body>

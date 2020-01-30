@@ -5,7 +5,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 340px;
+  width: 400px;
   padding: 50px;
   margin: 0 auto;
   font-size: 17px;

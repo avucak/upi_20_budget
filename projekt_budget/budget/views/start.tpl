@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 310px;
+  width: 400px;
   padding: 50px;
 }
 .button {

@@ -6,7 +6,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 340px;
+  width: 400px;
   padding: 50px;
   margin: 0 auto;
 }
@@ -93,6 +93,7 @@ function checkboxAndSelect(){
 
 <body onload="checkboxAndSelect()">
   <div class="divFrame">
+  <center>
     <form action=".." method="get"> <input type="submit" class="button" name="go_back" value="Back"></form>
     <form action="/transactions/add" method="get"> <input type="submit" class="button" name="add_transaction" value="Add transaction"></form>
     <input type="button" class="button" name="filter_transaction" value="Filter transactions" onclick="showFilter()">
@@ -153,6 +154,7 @@ function checkboxAndSelect(){
       <tr>
       <td colspan="5">
         <div style="display:none" id="div{{trans[0]}}Delete"> Are you sure you want to delete transaction {{trans[1]}}?
+		<br>
           <form action="/transactions" method="post" >
              <input type="hidden" name="action" value="delete">
              <input type="hidden" name="transactionId" value="{{trans[0]}}">
@@ -165,6 +167,7 @@ function checkboxAndSelect(){
       % end
       </table>
     </div>
+	</center>
   </div>
 </body>
 

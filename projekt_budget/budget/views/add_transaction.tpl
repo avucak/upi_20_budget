@@ -4,7 +4,7 @@
   overflow: auto;
   text-align: center;
   background-color: #F2F7FB;
-  width: 310px;
+  width: 400px;
   padding: 50px;
 }
 
@@ -47,6 +47,7 @@ function categoryWarning()
     }
     else {
 	document.getElementById("addTransaction").disabled=true;
+	document.getElementById("categoryWarning").style.display="block";
     }
 		
 }
@@ -67,7 +68,7 @@ function categoryWarning()
         % end
         </select>
         <br>
-        Amount: <input class="inputClass" type="number" name="transactionAmount" step="0.01">
+        Amount: <input class="inputClass" type="number" name="transactionAmount" step="0.01" min="0">
         <br>
         Date: <input class="inputClass"  type="date" name="transactionDate" id="transactionDate">
         <br>
@@ -76,6 +77,7 @@ function categoryWarning()
         <input type="submit" class="button" name="addTransaction" id="addTransaction" value="Add">
 	<p class="warning" id="categoryWarning">There must be at least one category to add a transaction </p>
       </form>
+	  <br>
       <form action="/transactions" method="get"><input type="submit" class="button" name="discardTransaction" value="Discard"></form>
     </div>
     </center>
